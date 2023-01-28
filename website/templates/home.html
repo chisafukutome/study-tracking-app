@@ -1,52 +1,22 @@
 {% extends "base.html" %} {% block title %}Dashboard{% endblock %} {% block
 content %}
-<style>
 
-</style>
 <h1>Dashboard</h1>
 <!-- Progress Chart & Messages -->
 <h3>Progress (this week)</h3>
 
-<!-- BAR CHART-->
-<div>
-  <canvas id="myChart" width="200" height="200" style="background-color: #E8E3D9"></canvas>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script>
-  const ctx = document.getElementById('myChart');
-  new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-      datasets: [{
-        label: 'Tasks Completed per Day',
-        data: [12, 19, 6, 5, 3, 7, 4],
-        backgroundColor: [
-          '#E8B59C'
-        ],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        x: {
-              display: true,
-        },
-        y: {
-          display: true,
-          beginAtZero: true
-        }
-      }
-    }
-  });
-</script>
-
 <div class="progres row">
-  <div class="progress-chart col-8" style="background-color: blue"></div>
+  <!-- Bar Chart -->
+  <div class="progress-chart col-8">
+    <canvas
+      id="myChart"
+      width="200"
+      height="200"
+      style="background-color: #e8e3d9"
+    ></canvas>
+  </div>
+  <!-- End Bar Chart -->
+
   <div class="progress-message col text-center">
     <div>
       <h5>
@@ -66,93 +36,132 @@ content %}
 <h3>Goals (this week)</h3>
 <div class="goal row text-center">
   <div class="col">
-    <!--<div class="goal-chart" style="border: solid 10px red; height: 200%;"></div>-->
+    <!-- Pie Chart -->
+    <div class="goal-chart">
+      <canvas id="myPieChartTasks" width="400" height="400"></canvas>
+    </div>
+    <!-- End Pie Chart -->
     <p>You still need <font>5</font> more tasks.</p>
-  <!--PIE CHART TASKS-->
-  <div>
-    <canvas id="myPieChartTasks" width="400" height="400"></canvas>
-  </div>
-  
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  
-  <script>
-    const ctx1 = document.getElementById('myPieChartTasks');
-  
-    new Chart(ctx1, {
-      type: 'pie',
-      data: {
-        labels: ['Tasks Completed', 'Tasks Remaining'],
-        datasets: [{
-          label: '# of Tasks',
-          data: [20, 5],
-          backgroundColor: [
-            '#E8B59C',
-            '#E8E3D9'
-          ],
-          borderWidth: 1
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          x: {
-                display: false,
-          },
-          y: {
-            display: false,
-            beginAtZero: true
-          }
-        }
-      }
-    });
-  </script>
-
   </div>
   <div class="col">
-    <!--<div class="goal-chart" style="border: solid 10px red; height: 200%;"></div>-->
+    <!-- Pie Chart -->
+    <div class="goal-chart">
+      <canvas id="myPieChartDuration" width="400" height="400"></canvas>
+    </div>
+    <!-- End Pie Chart -->
     <p>You still need <font>5</font> more hours.</p>
-     <!--PIE CHART TASKS-->
-  <div>
-    <canvas id="myPieChartDuration" width="400" height="400"></canvas>
   </div>
-  
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  
-  <script>
-    const ctx2 = document.getElementById('myPieChartDuration');
-  
-    new Chart(ctx2, {
-      type: 'pie',
-      data: {
-        labels: ['Time Completed', 'Time Remaining'],
-        datasets: [{
-          label: '# of Hours',
-          data: [20, 4],
-          backgroundColor: [
-            '#E8B59C',
-            '#E8E3D9'
-          ],
-          borderWidth: 1
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          x: {
-                display: false,
-          },
-          y: {
-            display: false,
-            beginAtZero: true
-          }
-        }
-      }
-    });
-  </script>
-  </div>
-  </div>
-  <!-- end Goal Chart & Messages -->
-  {% endblock %}
 </div>
+<!-- end Goal Chart & Messages -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Bar Chart JS -->
+<script>
+  const ctx = document.getElementById("myChart");
+  new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+      ],
+      datasets: [
+        {
+          label: "Tasks Completed per Day",
+          data: [12, 19, 6, 5, 3, 7, 4],
+          backgroundColor: ["#E8B59C"],
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          display: true,
+        },
+        y: {
+          display: true,
+          beginAtZero: true,
+        },
+      },
+    },
+  });
+</script>
+<!-- End Bar Chart JS-->
+
+<!--PIE CHART JS-->
+<script>
+  const ctx1 = document.getElementById("myPieChartTasks");
+
+  new Chart(ctx1, {
+    type: "pie",
+    data: {
+      labels: ["Tasks Completed", "Tasks Remaining"],
+      datasets: [
+        {
+          label: "# of Tasks",
+          data: [20, 5],
+          backgroundColor: ["#E8B59C", "#E8E3D9"],
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          display: false,
+        },
+        y: {
+          display: false,
+          beginAtZero: true,
+        },
+      },
+    },
+  });
+</script>
+<!-- End Pie Chart JS -->
+
+<!--PIE CHART TASKS-->
+
+<script>
+  const ctx2 = document.getElementById("myPieChartDuration");
+
+  new Chart(ctx2, {
+    type: "pie",
+    data: {
+      labels: ["Time Completed", "Time Remaining"],
+      datasets: [
+        {
+          label: "# of Hours",
+          data: [20, 4],
+          backgroundColor: ["#E8B59C", "#E8E3D9"],
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          display: false,
+        },
+        y: {
+          display: false,
+          beginAtZero: true,
+        },
+      },
+    },
+  });
+</script>
+{% endblock %}
