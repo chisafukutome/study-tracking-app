@@ -43,6 +43,7 @@ content %}
       <canvas id="myPieChartTasks" width="400" height="400"></canvas>
     </div>
     <button onclick="addTaskCompleted()"> Add Task Completed</button>
+    <button onclick="addTaskReamining()"> Add Task Remaining</button>
     <!-- End Pie Chart -->
     
     <p>You still need <font>5</font> more tasks.</p>
@@ -53,6 +54,7 @@ content %}
       <canvas id="myPieChartDuration" width="400" height="400"></canvas>
     </div>
     <button onclick="addHoursCompleted()"> Add Hours Completed</button>
+    <button onclick="addHoursRemaining()"> Add Hours Completed</button>
     <!-- End Pie Chart -->
     <p>You still need <font>5</font> more hours.</p>
   </div>
@@ -138,6 +140,17 @@ function addTaskCompleted() {
 
   myPieTasks.update();
 }
+
+function addTaskReamining() {
+  
+  if(myPieTasks.config.data.datasets[0].data[0] > 0)
+  {
+    myPieTasks.config.data.datasets[0].data[1] +=1;
+    myPieTasks.config.data.datasets[0].data[0] -=1;
+  }
+
+  myPieTasks.update();
+}
 </script>
 <!-- End Pie Chart JS -->
 
@@ -180,6 +193,17 @@ function addTaskCompleted() {
   {
     myPieDuration.config.data.datasets[0].data[0] +=1;
     myPieDuration.config.data.datasets[0].data[1] -=1;
+  }
+
+  myPieDuration.update();
+}
+
+function addHoursRemaining() {
+  
+  if(myPieDuration.config.data.datasets[0].data[0] > 0)
+  {
+    myPieDuration.config.data.datasets[0].data[1] +=1;
+    myPieDuration.config.data.datasets[0].data[0] -=1;
   }
 
   myPieDuration.update();

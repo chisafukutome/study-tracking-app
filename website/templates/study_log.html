@@ -39,6 +39,7 @@ content %}
           id="amount"
           placeholder="0"
           aria-label="amount"
+          min=0 oninput="validity.valid||(value='');"
         />
       </div>
       <div class="col">
@@ -62,6 +63,7 @@ content %}
           id="duration_h"
           placeholder="0"
           aria-label="duration_h"
+          min=0 oninput="validity.valid||(value='');"
         />
       </div>
       <p class="col">hours</p>
@@ -73,6 +75,7 @@ content %}
           id="duration_m"
           placeholder="0"
           aria-label="duration_m"
+          min=0 oninput="validity.valid||(value='');"
         />
       </div>
       <p class="col">minutes</p>
