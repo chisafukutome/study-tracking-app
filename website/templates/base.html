@@ -130,7 +130,7 @@ l-59 7 1 55 c1 30 2 126 3 212 l1 157 64 -19 c62 -17 205 -88 237 -116 8 -8
               <a class="nav-link active" aria-current="page" href="/home">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Location</a>
+              <a class="nav-link" href="/map">Location</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/log_study">Study Log</a>
@@ -138,6 +138,19 @@ l-59 7 1 55 c1 30 2 126 3 212 l1 157 64 -19 c62 -17 205 -88 237 -116 8 -8
             <li class="nav-item">
               <a class="nav-link" href="#">Virtual Study Space</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/create_account">Create Account</a>
+            </li>
+            {% if session['logged_in'] == True %}
+            <li>
+              <a class="nav-link" href="/logout">Logout <span class="sr-only">(current)</span></a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="/login">Login <span class="sr-only">(current)</span></a>
+            </li>
+            {% endif %}
+            </ul>
           </ul>
         </div>
       </div>
