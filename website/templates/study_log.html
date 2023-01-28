@@ -1,4 +1,22 @@
 {% extends "base.html" %} {% block title %}Dashboard{% endblock %} {% block
 content %}
 <!-- TODO: ADD LOG PROGRESS FORM -->
+<div class="row g-3">
+    <div class="col-sm-7">
+      <input type="text" class="form-control" placeholder="Task" aria-label="Task">
+    </div>
+    <div class="col-sm">
+      <input type="text" class="form-control" placeholder="Time needed" aria-label="Time needed">
+    </div>
+    <div class="col-auto">
+        <label class="visually-hidden" for="autoSizingSelect">State of completion</label>
+        <select class="form-select" id="autoSizingSelect">
+          <option selected>Choose...</option>
+          <option value="1">Need to start</option>
+          <option value="2">In progress</option>
+          <option value="3">Done</option>
+        </select>
+      </div>
+</div>
+
 {% endblock %}
