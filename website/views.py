@@ -8,10 +8,7 @@ import sys
 from website.user import UserData
 from sqlalchemy import func
 
-# EXAMPLE_USER_ID = 123456789
 CURR_USER = UserData(None)
-
-
 views = Blueprint("views", __name__)
 
 
@@ -145,6 +142,7 @@ def login():
         return redirect(url_for('views.home'))
     return render_template('login.html')
 
+
 @views.route("/logout", methods=['GET', 'POST'])
 def logout():
     login_check()
@@ -174,6 +172,7 @@ def map():
         return render_template('map.html', saved=coords)
 
     return render_template('map.html')
+
 
 @views.route("/virtual study space", methods=['GET', 'POST'])
 def virtual_study_space():
