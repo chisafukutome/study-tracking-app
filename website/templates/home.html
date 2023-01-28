@@ -42,7 +42,9 @@ content %}
     <div class="goal-chart">
       <canvas id="myPieChartTasks" width="400" height="400"></canvas>
     </div>
+    <button onclick="addTaskCompleted()"> Add Task Completed</button>
     <!-- End Pie Chart -->
+    
     <p>You still need <font>5</font> more tasks.</p>
   </div>
   <div class="col">
@@ -50,6 +52,7 @@ content %}
     <div class="goal-chart">
       <canvas id="myPieChartDuration" width="400" height="400"></canvas>
     </div>
+    <button onclick="addHoursCompleted()"> Add Hours Completed</button>
     <!-- End Pie Chart -->
     <p>You still need <font>5</font> more hours.</p>
   </div>
@@ -97,7 +100,7 @@ content %}
 <script>
   const ctx1 = document.getElementById("myPieChartTasks");
 
-  new Chart(ctx1, {
+  const myPieTasks = new Chart(ctx1, {
     type: "pie",
     data: {
       labels: ["Tasks Completed", "Tasks Remaining"],
@@ -124,6 +127,17 @@ content %}
       },
     },
   });
+
+function addTaskCompleted() {
+  
+  if(myPieTasks.config.data.datasets[0].data[1] > 0)
+  {
+    myPieTasks.config.data.datasets[0].data[0] +=1;
+    myPieTasks.config.data.datasets[0].data[1] -=1;
+  }
+
+  myPieTasks.update();
+}
 </script>
 <!-- End Pie Chart JS -->
 
@@ -132,7 +146,7 @@ content %}
 <script>
   const ctx2 = document.getElementById("myPieChartDuration");
 
-  new Chart(ctx2, {
+  const myPieDuration = new Chart(ctx2, {
     type: "pie",
     data: {
       labels: ["Time Completed", "Time Remaining"],
@@ -159,5 +173,16 @@ content %}
       },
     },
   });
+
+  function addHoursCompleted() {
+  
+  if(myPieDuration.config.data.datasets[0].data[1] > 0)
+  {
+    myPieDuration.config.data.datasets[0].data[0] +=1;
+    myPieDuration.config.data.datasets[0].data[1] -=1;
+  }
+
+  myPieDuration.update();
+}
 </script>
 {% endblock %}
