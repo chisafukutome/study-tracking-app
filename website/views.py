@@ -1,6 +1,6 @@
 """ Service related functions """
-from flask import Blueprint, render_template, request, redirect, url_for
-from website import db
+from flask import Blueprint, render_template, request, redirect, url_for, flash
+from website import db, bcrypt
 from website.models import Study, User, SavedMarker
 from datetime import datetime, timedelta
 import json
@@ -27,7 +27,7 @@ def saveMarkers(markers):
 @views.route("/home")
 def home():
     x_axis, y_axis = [], []
-    day = datetime.today().date() 
+    day = datetime.today().date()
     for i in range(7):
         # Extract study log data that is on the specific date
         studies = Study.query.filter(func.DATE(Study.date) == day).all()
@@ -84,6 +84,39 @@ def log_study():
         return redirect(url_for('views.home'))
 
     return render_template("study_log.html")
+
+
+@views.route("/create_account", methods=['GET', 'POST'])
+def create():
+    if request.method == 'POST':
+        # Check if user exists
+        # if not, hash password and create account
+        passw_hash = bcrypt.generate_password_hash(request.form['passwd']).decode('utf-8')
+        user = User(name=request.form['name'], uname=request.form['uname'], email=request.form['email'], passw=passw_hash)
+        db.session.add(user)
+        db.session.commit()
+        # pass
+        return render_template('home.html')
+    return render_template('create_account.html')
+
+
+@views.route("/login", methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        # Check if password is correct for user
+        input = request.form['user_input']
+        user_entry = User.query.filter_by(uname=input).first()
+        if user_entry is None:
+            flash("Invalid Username or password!", "danger")
+            return redirect(url_for('views.login'))
+
+        hash = user_entry.passw
+        if hash != bcrypt.generate_password_hash(request.form['passwd']).decode('utf-8'):
+            flash("Invalid Username or password!", "danger")
+            return redirect(url_for('views.login'))
+        # load user data
+        # return render_template('home.html')
+    return render_template('login.html')
 
 
 @views.route("/map", methods=['GET', 'POST'])

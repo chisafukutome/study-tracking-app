@@ -21,7 +21,7 @@ class User(db.Model):
     name = db.Column(db.String(50), nullable=False)
     uname = db.Column(db.String(50), nullable=False, unique=True)
     email = db.Column(db.String(50), nullable=False, unique=True)
-    passw = db.Column(db.Integer, nullable=False)
+    passw = db.Column(db.String(50), nullable=False, unique=False)
 
 
 class SavedMarker(db.Model):
