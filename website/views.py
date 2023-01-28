@@ -1,11 +1,17 @@
 """ Service related functions """
 from flask import Blueprint, render_template, request, redirect, url_for
-import requests
 from . import db
 from .models import Study
 from datetime import datetime
 
 views = Blueprint("views", __name__)
+
+
+def saveMarkers(markers):
+    with open('markers.txt', 'w') as f:
+        for m in markers:
+            f.write(f'{m}\n')    
+
 
 @views.route("/")
 @views.route("home")
@@ -36,6 +42,8 @@ def log_study():
 
 
 
-@views.route("/map")
+@views.route("/map", methods=['GET', 'POST'])
 def map():
+    if request.method == 'POST':
+        saveMarkers(request.json['values'])
     return render_template('map.html')

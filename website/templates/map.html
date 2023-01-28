@@ -1,18 +1,60 @@
 {% extends "base.html" %} 
 {% block content %}
     <head>
-        <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script> -->
-        <script type="module" src="{{ url_for('static', filename='js/map.js') }}"></script>
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+        <!-- <script type="module" src="{{ url_for('static', filename='js/map.js') }}"></script> -->
     </head>
     <body>
-        <div class="row p-5">
+        <div class="row">
+            <div class="col">
+                <button class="btn btn-primary" onclick="saveMarkers()">Submit</button>
+            </div>
+        </div>
+        <div class="row p-3">
             <div id="map"></div>
             <style>
                 #map {
                     height: 500px;
+                    width: 100%;
                 }
                 </style>
             <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpXMc7uBSenUYzZT8-qvDHBX_njqP6XH0&callback=initMap&v=weekly" defer></script>
         </div>
     </body>
+    <script>
+        let map;
+        let markers = [];
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 29.6436, lng: -82.3549 },
+                zoom: 14,
+            });
+
+            map.addListener("click", (event) => {
+                addMarker(event.latLng);
+            });
+
+        }
+
+        function addMarker(position) {
+            const marker = new google.maps.Marker({
+                position,
+                map,
+            });
+            
+            markers.push([marker.getPosition().lat(), marker.getPosition().lng()]);
+        }
+
+        function saveMarkers() {
+            const Http = new XMLHttpRequest();
+            const url='{{ url_for('views.map') }}';
+            Http.open("POST", url);
+            Http.setRequestHeader('Content-Type', 'application/json');
+            Http.send(JSON.stringify({"values": markers}));
+            alert('Markers Saved!');
+        }
+
+        window.initMap = initMap;
+    </script>
 {% endblock %}
