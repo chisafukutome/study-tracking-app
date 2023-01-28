@@ -1,5 +1,6 @@
 """ Service related functions """
 from flask import Blueprint, render_template
+import requests
 
 views = Blueprint("views", __name__)
 
@@ -11,6 +12,4 @@ def home():
 
 @views.route("/map")
 def map():
-    # Get saved locations from user
-    saved = []
-    return render_template("map.html", markers=saved)
+    return render_template('map.html')
