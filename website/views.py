@@ -127,8 +127,7 @@ def map():
 
 @views.route("/virtual study space", methods=['GET', 'POST'])
 def virtual_study_space():
+    if request.method == 'POST':
+        request.form.get('virtual_study_space')
     # Get data from virtual_study_space.html
-    if request.method == "POST":
-        return redirect(url_for('views.home'))
-
     return render_template("virtual_study_space.html")
