@@ -2,18 +2,17 @@
 content %}
 
 <h1>Dashboard</h1>
+  <style>
+    h1, h2, h3, h4, h5, h6 {font-family: georgia, serif;}
+    body {font-family: Verdana, sans-serif;}
+  </style>
 <!-- Progress Chart & Messages -->
-<h3>Progress (this week)</h3>
+<h3>Progress</h3>
 
 <div class="progres row">
   <!-- Bar Chart -->
   <div class="progress-chart col-8">
-    <canvas
-      id="myChart"
-      width="200"
-      height="200"
-      style="background-color: #e8e3d9"
-    ></canvas>
+    <canvas id="myChart" width="200" height="200"></canvas>
   </div>
   <!-- End Bar Chart -->
 
@@ -22,12 +21,15 @@ content %}
       <h5>
         <span class="material-symbols-outlined"> schedule </span>Time Studied
       </h5>
-      <p><font>35:45</font> hours</p>
+      <p>
+        <font>{{weekly_total.split(':')[0]}}</font> hours
+        <font>{{weekly_total.split(':')[1]}}</font> min (this week)
+      </p>
     </div>
     <h5>
       <span class="material-symbols-outlined"> task </span>Tasks Completed
     </h5>
-    <font>10</font>
+    <p><font>10</font> tasks (this week)</p>
   </div>
 </div>
 <!-- End Progress Chart & Messages -->
@@ -59,22 +61,16 @@ content %}
 <!-- Bar Chart JS -->
 <script>
   const ctx = document.getElementById("myChart");
+  let x_axis = JSON.parse({{x_axis | tojson}});
+  let y_axis = JSON.parse({{y_axis | tojson}});
   new Chart(ctx, {
     type: "bar",
     data: {
-      labels: [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday",
-      ],
+      labels: x_axis,
       datasets: [
         {
           label: "Tasks Completed per Day",
-          data: [12, 19, 6, 5, 3, 7, 4],
+          data: y_axis,
           backgroundColor: ["#E8B59C"],
           borderWidth: 1,
         },
