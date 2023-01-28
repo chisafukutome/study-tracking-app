@@ -1,5 +1,5 @@
 """ Service related functions """
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from website import db, bcrypt
 from website.models import Study, User, SavedMarker
 from datetime import datetime, timedelta
@@ -8,11 +8,15 @@ import sys
 from website.user import UserData
 from sqlalchemy import func
 
-# EXAMPLE_USER_ID = 123456789
 CURR_USER = UserData(None)
-
-
 views = Blueprint("views", __name__)
+
+
+def login_check():
+    if CURR_USER.id:
+        session['logged_in'] = True
+    else:
+        session['logged_in'] = False
 
 
 def load_user_data(input):
@@ -30,9 +34,17 @@ def check_user_exists(input):
 
 def saveMarkers(markers):
     for item in markers:
+        if SavedMarker.query.filter_by(user_id=CURR_USER.data.id, long=item[0], lat=item[1]).first is not None:
+            continue
         marker = SavedMarker(user_id=CURR_USER.data.id, long=item[0], lat=item[1])
         db.session.add(marker)
         db.session.commit()
+
+
+@views.route("/")
+@views.route("/home")
+def home():
+    login_check()
 
 def calc_xy(y, x):
     x_axis, y_axis = [], []
@@ -108,6 +120,7 @@ def home():
 
 @views.route("/log_study", methods=['GET', 'POST'])
 def log_study():
+    login_check()
     # Get data from study_log.html
     if request.method == "POST":
         date = datetime.strptime(request.form.get('date'), "%Y-%m-%d")
@@ -130,6 +143,7 @@ def log_study():
 
 @views.route("/create_account", methods=['GET', 'POST'])
 def create():
+    login_check()
     if request.method == 'POST':
         if check_user_exists(request.form['uname']) or check_user_exists(request.form['email']):
             flash("Username/email already in use!", "danger")
@@ -144,35 +158,53 @@ def create():
         )
         db.session.add(user)
         db.session.commit()
-
-        return redirect('home')
+        CURR_USER.logout()
+        load_user_data(user.id)
+        return redirect(url_for('views.home'))
     return render_template('create_account.html')
 
 
 @views.route("/login", methods=['GET', 'POST'])
 def login():
+    login_check()
     if request.method == 'POST':
         user_entry = check_user_exists(request.form['user_input'])
         if user_entry is None or not bcrypt.check_password_hash(user_entry[0].passw, request.form['passwd']):
             flash("Invalid Username or password1", "danger")
-            return redirect(url_for('login'))
+            return redirect(url_for('views.login'))
 
+        CURR_USER.logout()
         load_user_data(user_entry[0].id)
-        return redirect('home')
+        return redirect(url_for('views.home'))
+    return render_template('login.html')
+
+
+@views.route("/logout", methods=['GET', 'POST'])
+def logout():
+    login_check()
+    CURR_USER.logout()
     return render_template('login.html')
 
 
 @views.route("/map", methods=['GET', 'POST'])
 def map():
+    login_check()
+    coords = []
     if request.method == 'POST':
-        saveMarkers(request.json['values'])
-
-    if CURR_USER.id:
-        coords = []
+        if 'show_all' in request.form and request.form['show_all'] == 'all':
+            markers = SavedMarker.query.all()
+            for m in markers:
+                coords.append([m.long, m.lat])
+            return render_template('map.html', saved=coords)
+        else:
+            if not CURR_USER.id:
+                flash("Not Logged In!", "danger")
+                return redirect(url_for('views.map'))
+            saveMarkers(request.json['values'])
+    elif CURR_USER.id:
         markers = SavedMarker.query.filter_by(user_id=CURR_USER.id).all()
         for m in markers:
             coords.append([m.long, m.lat])
-        print(coords, file=sys.stderr)
         return render_template('map.html', saved=coords)
 
     return render_template('map.html')
@@ -191,7 +223,9 @@ def change_chart():
     return redirect(url_for('views.home', x_axis=json.dumps(xy_data['x_axis'][::-1]), y_axis=json.dumps(xy_data['y_axis'][::-1]), time_studied=xy_data['time_studied'], tasks_completed=xy_data['tasks_completed']))
 
 @views.route("/virtual_study_space", methods=['GET', 'POST'])
+@views.route("/virtual study space", methods=['GET', 'POST'])
 def virtual_study_space():
+    login_check()
     # Get data from virtual_study_space.html
     if request.method == "POST":
         return redirect(url_for('views.home'))

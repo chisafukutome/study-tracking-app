@@ -6,8 +6,24 @@
     </head>
     <body>
         <div class="row">
-            <div class="col">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-danger" role="alert">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}
+            {% endwith %}
+        </div>
+        <div class="row">
+            <div class="col text-center">
                 <button class="btn btn-primary" onclick="saveMarkers()">Submit</button>
+            </div>
+            <div class="col text-center">
+                <form method="post">
+                    <button class="btn btn-success" name="show_all" value="all">Show All</button>
+                </form>
             </div>
         </div>
         <div class="row p-3">

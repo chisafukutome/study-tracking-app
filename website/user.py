@@ -5,3 +5,7 @@ class UserData:
     def login(self, db_user):
         self.data = db_user
         self.id = db_user.id
+
+    def logout(self):
+        self.id = None
+        self.data = None

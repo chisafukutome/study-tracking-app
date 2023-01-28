@@ -139,11 +139,18 @@ l-59 7 1 55 c1 30 2 126 3 212 l1 157 64 -19 c62 -17 205 -88 237 -116 8 -8
               <a class="nav-link" href="/virtual_study_space">Virtual Study Space</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/login">Login</a>
-            </li>
-            <li class="nav-item">
               <a class="nav-link" href="/create_account">Create Account</a>
             </li>
+            {% if session['logged_in'] == True %}
+            <li>
+              <a class="nav-link" href="/logout">Logout <span class="sr-only">(current)</span></a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="/login">Login <span class="sr-only">(current)</span></a>
+            </li>
+            {% endif %}
+            </ul>
           </ul>
         </div>
       </div>
