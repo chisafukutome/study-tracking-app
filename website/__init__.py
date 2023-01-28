@@ -2,7 +2,7 @@ from flask import Flask
 from os import path
 from flask_sqlalchemy import SQLAlchemy
 
-db = SQLAlchemy()
+db = SQLAlchemy(session_options={"autoflush": False})
 DB_NAME = "study-tracking.db"
 
 def create_app():
