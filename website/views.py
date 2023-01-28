@@ -29,10 +29,6 @@ def check_user_exists(input):
 
 
 def saveMarkers(markers):
-    with open('markers.txt', 'w') as f:
-        for m in markers:
-            f.write(f'{m}\n')
-
     for item in markers:
         marker = SavedMarker(user_id=CURR_USER.data.id, long=item[0], lat=item[1])
         db.session.add(marker)
@@ -121,7 +117,6 @@ def create():
         return redirect('home')
     return render_template('create_account.html')
 
-# print(user_entry[0].passw, file=sys.stderr)
 
 @views.route("/login", methods=['GET', 'POST'])
 def login():
@@ -140,6 +135,15 @@ def login():
 def map():
     if request.method == 'POST':
         saveMarkers(request.json['values'])
+
+    if CURR_USER.id:
+        coords = []
+        markers = SavedMarker.query.filter_by(user_id=CURR_USER.id).all()
+        for m in markers:
+            coords.append([m.long, m.lat])
+        print(coords, file=sys.stderr)
+        return render_template('map.html', saved=coords)
+
     return render_template('map.html')
 
 @views.route("/virtual study space", methods=['GET', 'POST'])
