@@ -4,21 +4,33 @@ from website import db, bcrypt
 from website.models import Study, User, SavedMarker
 from datetime import datetime, timedelta
 import json
+import sys
+from website.user import UserData
 from sqlalchemy import func
 
-EXAMPLE_USER_ID = 123456789
+# EXAMPLE_USER_ID = 123456789
+CURR_USER = UserData(None)
 
 
 views = Blueprint("views", __name__)
 
 
-def saveMarkers(markers):
-    with open('markers.txt', 'w') as f:
-        for m in markers:
-            f.write(f'{m}\n')
+def load_user_data(input):
+    CURR_USER.login(User.query.filter_by(id=input).first())
 
+
+def check_user_exists(input):
+    user_entry = User.query.filter_by(uname=input).all()
+    if len(user_entry) == 0:
+        user_entry = User.query.filter_by(email=input).all()
+        if len(user_entry) == 0:
+            return None
+    return user_entry
+
+
+def saveMarkers(markers):
     for item in markers:
-        marker = SavedMarker(user_id=EXAMPLE_USER_ID, long=item[0], lat=item[1])
+        marker = SavedMarker(user_id=CURR_USER.data.id, long=item[0], lat=item[1])
         db.session.add(marker)
         db.session.commit()
 
@@ -94,7 +106,6 @@ def home():
     return render_template("home.html", x_axis=json.dumps(xy_data['x_axis'][::-1]), y_axis=json.dumps(xy_data['y_axis'][::-1]), time_studied=xy_data['time_studied'], tasks_completed=xy_data['tasks_completed'])
 
 
-
 @views.route("/log_study", methods=['GET', 'POST'])
 def log_study():
     # Get data from study_log.html
@@ -120,33 +131,34 @@ def log_study():
 @views.route("/create_account", methods=['GET', 'POST'])
 def create():
     if request.method == 'POST':
-        # Check if user exists
-        # if not, hash password and create account
+        if check_user_exists(request.form['uname']) or check_user_exists(request.form['email']):
+            flash("Username/email already in use!", "danger")
+            return redirect(url_for('views.create'))
+
         passw_hash = bcrypt.generate_password_hash(request.form['passwd']).decode('utf-8')
-        user = User(name=request.form['name'], uname=request.form['uname'], email=request.form['email'], passw=passw_hash)
+        user = User(
+            name=request.form['name'],
+            uname=request.form['uname'],
+            email=request.form['email'],
+            passw=passw_hash
+        )
         db.session.add(user)
         db.session.commit()
-        # pass
-        return render_template('home.html')
+
+        return redirect('home')
     return render_template('create_account.html')
 
 
 @views.route("/login", methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        # Check if password is correct for user
-        input = request.form['user_input']
-        user_entry = User.query.filter_by(uname=input).first()
-        if user_entry is None:
-            flash("Invalid Username or password!", "danger")
-            return redirect(url_for('views.login'))
+        user_entry = check_user_exists(request.form['user_input'])
+        if user_entry is None or not bcrypt.check_password_hash(user_entry[0].passw, request.form['passwd']):
+            flash("Invalid Username or password1", "danger")
+            return redirect(url_for('login'))
 
-        hash = user_entry.passw
-        if hash != bcrypt.generate_password_hash(request.form['passwd']).decode('utf-8'):
-            flash("Invalid Username or password!", "danger")
-            return redirect(url_for('views.login'))
-        # load user data
-        # return render_template('home.html')
+        load_user_data(user_entry[0].id)
+        return redirect('home')
     return render_template('login.html')
 
 
@@ -154,6 +166,15 @@ def login():
 def map():
     if request.method == 'POST':
         saveMarkers(request.json['values'])
+
+    if CURR_USER.id:
+        coords = []
+        markers = SavedMarker.query.filter_by(user_id=CURR_USER.id).all()
+        for m in markers:
+            coords.append([m.long, m.lat])
+        print(coords, file=sys.stderr)
+        return render_template('map.html', saved=coords)
+
     return render_template('map.html')
 
 
@@ -165,9 +186,14 @@ def change_chart():
 
         xy_data = calc_xy(y_axis_ch, x_axis_ch)
 
-        print("---------------------------------------------------------", xy_data['time_studied'], xy_data['tasks_completed'])
-
     # TODO: UPDATE the frontend
 
     return redirect(url_for('views.home', x_axis=json.dumps(xy_data['x_axis'][::-1]), y_axis=json.dumps(xy_data['y_axis'][::-1]), time_studied=xy_data['time_studied'], tasks_completed=xy_data['tasks_completed']))
 
+@views.route("/virtual_study_space", methods=['GET', 'POST'])
+def virtual_study_space():
+    # Get data from virtual_study_space.html
+    if request.method == "POST":
+        return redirect(url_for('views.home'))
+
+    return render_template("virtual_study_space.html")

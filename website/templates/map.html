@@ -35,6 +35,10 @@
                 addMarker(event.latLng);
             });
 
+            {% for m in saved %}
+            console.log({{ m }});
+            addMarker({ lat: {{ m[0] }}, lng: {{ m[1] }}});
+            {% endfor %}
         }
 
         function addMarker(position) {
