@@ -124,3 +124,11 @@ def map():
     if request.method == 'POST':
         saveMarkers(request.json['values'])
     return render_template('map.html')
+
+@views.route("/virtual study space", methods=['GET', 'POST'])
+def virtual_study_space():
+    # Get data from virtual_study_space.html
+    if request.method == "POST":
+        return redirect(url_for('views.home'))
+
+    return render_template("virtual_study_space.html")
