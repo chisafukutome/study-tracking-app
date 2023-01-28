@@ -12,16 +12,17 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     db.init_app(app)
 
-    # Register files
-    from .views import views
-    app.register_blueprint(views, url_prefix="/")
-    # End Register files
+
 
     # Create tables
     from .models import Study
     create_db(app)
     # End Create tables
 
+    # Register files
+    from .views import views
+    app.register_blueprint(views, url_prefix="/")
+    # End Register files
     return app
 
 # Create a database

@@ -46,6 +46,11 @@ def home():
         # Time Studied
         weekly_total = sum(y_axis)
         weekly_total = f"{int(weekly_total)}:{int((weekly_total % 1) * 60)}"
+        # End Time Studied
+
+        # Tasks Completed
+        # tasks_completed = Study.query.filter(Study.)
+        # End Tasks Completed
 
     return render_template("home.html", x_axis=json.dumps(x_axis[::-1]), y_axis=json.dumps(y_axis[::-1]), weekly_total=weekly_total)
 
