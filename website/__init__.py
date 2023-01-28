@@ -3,11 +3,12 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from os import path
 
+
 STUDY_DB = "study-tracking.db"
 USER_DB = "user.db"
 MARKERS_DB = "user_markers.db"
 db = SQLAlchemy(session_options={"autoflush": False})
-# DB_NAME = "study-tracking.db"
+bcrypt = Bcrypt()
 
 def create_app():
     app = Flask(__name__)
@@ -18,11 +19,8 @@ def create_app():
         'user': f'sqlite:///{USER_DB}',
         'markers': f'sqlite:///{MARKERS_DB}'
     }
-    bcrypt = Bcrypt(app)
-
     db.init_app(app)
-
-
+    bcrypt.init_app(app)
 
     # Create tables
     from .models import Study
