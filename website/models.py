@@ -14,16 +14,6 @@ class Study(db.Model):
     # TODO: unique with id
     location = db.Column(db.String(150))
 
-    # def __init__(self, id, date, task, amount, unit, duration_h, duration_m, loc):
-    #     self.id = id
-    #     self.date = date
-    #     self.task = task
-    #     self.amount = amount
-    #     self.unit = unit
-    #     self.duration_h = duration_h
-    #     self.duration_m = duration_m
-    #     self.location = loc
-
 
 class User(db.Model):
     __bind_key__ = 'user'
