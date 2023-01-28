@@ -45,15 +45,26 @@ def saveMarkers(markers):
 @views.route("/home")
 def home():
     login_check()
-    x_axis, y_axis = [], []
-    day = datetime.today().date()
-    for i in range(7):
-        # Extract study log data that is on the specific date
-        studies = Study.query.filter(func.DATE(Study.date) == day).all()
 
+def calc_xy(y, x)
+    x_axis, y_axis = [], []
+    tasks_completed, time_studied = 0, 0
+    end_day = datetime.today().date() 
+
+    x_dict = {'daily_ch': 1, 'weekly_ch': 6, 'monthly_ch': 30}
+    
+    if not x_dict[x] == 1:
+        start_day = end_day - timedelta(days=x_dict[x])
+    
+    for i in range(7):
+        if x_dict[x] == 1:
+            studies = Study.query.filter(func.DATE(Study.date) == end_day).all()
+        else:
+            # Extract study log data that is on the specific date
+            studies = Study.query.filter(func.DATE(Study.date) >= start_day, func.DATE(Study.date) <= end_day).all()
+        
         total_h = 0
         if studies:
-
             for study in studies:
 
                 # if there is no value, assign 0
@@ -63,23 +74,48 @@ def home():
                 # add duration
                 total_h += study.duration_h * 60 + study.duration_m
 
-            # Convert into hour
-            total_h = 0 if total_h == 0 else total_h / 60
-        y_axis.append(total_h)
-        x_axis.append(day.strftime('%m/%d'))
-        # Subtract a day
-        day -= timedelta(days=1)
+        # Convert into hour
+        total_h = 0 if total_h == 0 else total_h / 60
 
-        # Time Studied
-        weekly_total = sum(y_axis)
-        weekly_total = f"{int(weekly_total)}:{int((weekly_total % 1) * 60)}"
+        if x_dict[x] == 1:
+            x_axis.append(end_day.strftime('%m/%d'))
+            # Subtract a day
+            end_day -= timedelta(days=1)
+        else:
+            x_axis.append(f"{start_day.strftime('%m/%d')} - {end_day.strftime('%m/%d')}")
+            # Subtract a day
+            end_day = start_day - timedelta(days=1)
+            start_day = end_day - timedelta(days=x_dict[x])
+
+        if y == 'hours_ch':
+            y_axis.append(total_h)
+            # Tasks Completed
+            if i == 0:
+                tasks_completed = len(studies)
+                # Time Studied
+                time_studied = y_axis[0]
+                time_studied = f"{int(time_studied)}:{int((time_studied % 1) * 60)}"
         # End Time Studied
+        else:
+            y_axis.append(len(studies))
+            # Tasks Completed
+            tasks_completed = y_axis[0]
+            if i == 0:
+                time_studied = total_h
+                time_studied = f"{int(time_studied)}:{int((time_studied % 1) * 60)}"
 
-        # Tasks Completed
-        # tasks_completed = Study.query.filter(Study.)
-        # End Tasks Completed
 
-    return render_template("home.html", x_axis=json.dumps(x_axis[::-1]), y_axis=json.dumps(y_axis[::-1]), weekly_total=weekly_total)
+
+
+    return {'x_axis':x_axis, 'y_axis':y_axis, 'tasks_completed':tasks_completed, 'time_studied': time_studied}
+
+
+@views.route("/")
+@views.route("/home")
+def home():
+    xy_data = calc_xy('hours_ch', 'daily_ch')
+
+    return render_template("home.html", x_axis=json.dumps(xy_data['x_axis'][::-1]), y_axis=json.dumps(xy_data['y_axis'][::-1]), time_studied=xy_data['time_studied'], tasks_completed=xy_data['tasks_completed'])
 
 
 @views.route("/log_study", methods=['GET', 'POST'])
@@ -174,7 +210,20 @@ def map():
     return render_template('map.html')
 
 
-@views.route("/virtual study space", methods=['GET', 'POST'])
+
+@views.route("/change_chart", methods=["GET", "POST"])
+def change_chart():
+    if request.method == "POST":
+        x_axis_ch = request.form.get('x_axis_ch')
+        y_axis_ch = request.form.get('y_axis_ch')
+
+        xy_data = calc_xy(y_axis_ch, x_axis_ch)
+
+    # TODO: UPDATE the frontend
+
+    return redirect(url_for('views.home', x_axis=json.dumps(xy_data['x_axis'][::-1]), y_axis=json.dumps(xy_data['y_axis'][::-1]), time_studied=xy_data['time_studied'], tasks_completed=xy_data['tasks_completed']))
+
+@views.route("/virtual_study_space", methods=['GET', 'POST'])
 def virtual_study_space():
     login_check()
     # Get data from virtual_study_space.html
