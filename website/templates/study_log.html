@@ -1,10 +1,10 @@
-{% extends "base.html" %} {% block title %}Dashboard{% endblock %} {% block
+{% extends "base.html" %} {% block title %}Log Study{% endblock %} {% block
 content %}
 
 <!-- TODO: validate number input -->
 <h1 align="center">Log Study Form</h1>
 <div class="log-form">
-  <div class="g-3">
+  <form class="g-3" method="POST">
     <!-- Date -->
     <label for="date">Date</label>
     <input
@@ -89,6 +89,6 @@ content %}
       <button type="submit" class="btn btn-primary">Log Study</button>
     </div>
     </div>
-  </div>
+</form>
 </div>
   {% endblock %}
