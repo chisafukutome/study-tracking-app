@@ -1,4 +1,123 @@
 {% extends "base.html" %} {% block title %}Dashboard{% endblock %} {% block
 content %}
-<h1>This is home.</h1>
-{% endblock %}
+<h1>Dashboard</h1>
+<!-- Progress Chart & Messages -->
+<h3>Progress (this week)</h3>
+<div class="progres row">
+  <div class="progress-chart col-8" style="background-color: blue"></div>
+  <div class="progress-message col text-center">
+    <div>
+      <h5>
+        <span class="material-symbols-outlined"> schedule </span>Time Studied
+      </h5>
+      <p><font>35:45</font> hours</p>
+    </div>
+    <h5>
+      <span class="material-symbols-outlined"> task </span>Tasks Completed
+    </h5>
+    <font>10</font>
+  </div>
+</div>
+<!-- End Progress Chart & Messages -->
+
+<!-- Goal Chart & Messages -->
+<h3>Goals (this week)</h3>
+<div class="goal row text-center">
+
+<!-- BAR CHART-->
+  <div>
+    <canvas id="myChart" width="200" height="200"></canvas>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <!--Colors" Red, Blue, Yellow, Green, Purple, Orange, Black-->
+  <script>
+    const ctx = document.getElementById('myChart');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+        datasets: [{
+          label: 'Tasks Completed per Day',
+          data: [12, 19, 6, 5, 3, 7, 4],
+          backgroundColor: [
+            'rgb(65,105,225, 1)',
+            'rgb(255, 0, 0, 1)',
+            'rgb(255, 255, 0, 1)',
+            'rgb(0, 255, 0, 1)',
+            'rgb(139, 0, 139, 1)',
+            'rgb(255, 140, 0, 1)',
+            'rgb(0, 0, 0, 1)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: {
+                display: false,
+          },
+          y: {
+            display: false,
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  </script>
+  <div class="col">
+    <!--<div class="goal-chart" style="border: solid 10px red; height: 200%;"></div>-->
+    <p>You still need <font>5</font> more hours.</p>
+  </div>
+
+  <!--PIE CHART -->
+  <div>
+    <canvas id="myPieChart" width="400" height="400"></canvas>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <script>
+    const ctx2 = document.getElementById('myPieChart');
+  
+    new Chart(ctx2, {
+      type: 'pie',
+      data: {
+        labels: ['Tasks Completed', 'Tasks Remaining'],
+        datasets: [{
+          label: '# of Tasks',
+          data: [20, 5],
+          backgroundColor: [
+            'rgb(65,105,225, 0.5)',
+            'rgb(255, 0, 0, 0.5)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: {
+                display: false,
+          },
+          y: {
+            display: false,
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  </script>
+
+  <div class="col">
+    <!--<div class="goal-chart" style="border: solid 10px red; height: 200%;"></div>-->
+    <p>You still need <font>5</font> more tasks.</p>
+  </div>
+  </div>
+  <!-- end Goal Chart & Messages -->
+  {% endblock %}
+</div>
