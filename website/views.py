@@ -46,7 +46,7 @@ def saveMarkers(markers):
 def home():
     login_check()
 
-def calc_xy(y, x):
+def calc_xy(y, x)
     x_axis, y_axis = [], []
     tasks_completed, time_studied = 0, 0
     end_day = datetime.today().date() 
@@ -210,6 +210,7 @@ def map():
     return render_template('map.html')
 
 
+
 @views.route("/change_chart", methods=["GET", "POST"])
 def change_chart():
     if request.method == "POST":
@@ -223,7 +224,6 @@ def change_chart():
     return redirect(url_for('views.home', x_axis=json.dumps(xy_data['x_axis'][::-1]), y_axis=json.dumps(xy_data['y_axis'][::-1]), time_studied=xy_data['time_studied'], tasks_completed=xy_data['tasks_completed']))
 
 @views.route("/virtual_study_space", methods=['GET', 'POST'])
-@views.route("/virtual study space", methods=['GET', 'POST'])
 def virtual_study_space():
     login_check()
     # Get data from virtual_study_space.html
