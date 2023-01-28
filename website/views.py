@@ -8,6 +8,12 @@ views = Blueprint("views", __name__)
 def home():
     return render_template("home.html")
 
+@views.route("/log_study")
+def log_study():
+    return render_template("study_log.html")
+
+
+
 
 @views.route("/map")
 def map():

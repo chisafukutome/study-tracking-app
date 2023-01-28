@@ -1,36 +1,94 @@
 {% extends "base.html" %} {% block title %}Dashboard{% endblock %} {% block
 content %}
-<!-- TODO: ADD LOG PROGRESS FORM -->
-<div class="row g-3">
-    <div class="col-sm-7">
-      <input type="text" class="form-control" placeholder="Task" aria-label="Task">
-    </div>
-    <div class="col-sm">
-      <input type="text" class="form-control" placeholder="Time needed" aria-label="Time needed">
-    </div>
-    <div class="col-auto">
-        <label class="visually-hidden" for="autoSizingSelect">State of completion</label>
-        <select class="form-select" id="autoSizingSelect">
-          <option selected>Choose...</option>
-          <option value="1">Need to start</option>
-          <option value="2">In progress</option>
-          <option value="3">Done</option>
+
+<!-- TODO: validate number input -->
+<h1 align="center">Log Study Form</h1>
+<div class="log-form">
+  <div class="g-3">
+    <!-- Date -->
+    <label for="date">Date</label>
+    <input
+      type="date"
+      class="form-control"
+      name="date"
+      id="date"
+      aria-label="date"
+    />
+    <!-- End Date -->
+
+    <!-- Task -->
+    <label for="task">Task</label>
+    <input
+      type="text"
+      class="form-control"
+      name="task"
+      id="task"
+      placeholder="enter your study task"
+      aria-label="task"
+    />
+    <!-- End Task -->
+
+    <!-- Amount -->
+    <label for="amount">Amount</label>
+    <div class="row">
+      <div class="col">
+        <input
+          type="number"
+          class="form-control"
+          name="amount"
+          id="amount"
+          placeholder="0"
+          aria-label="amount"
+        />
+      </div>
+      <div class="col">
+        <select name="unit" id="unit" class="form-select">
+          <option value="pages">pages</option>
+          <option value="modules">modules</option>
         </select>
       </div>
-</div>
-<div class="row g-3">
-  <div class="col-sm-7">
-    <input type="text" class="form-control" placeholder="Location" aria-label="Location">
-  </div>
-  <div class="col-sm">
-    <input type="text" class="form-control" placeholder="Day" aria-label="Day">
-  </div>
-  <div class="col-sm">
-    <input type="text" class="form-control" placeholder="Amount" aria-label="Amount">
-  </div>
-  <div class="col-sm">
-    <input type="text" class="form-control" placeholder="Duration" aria-label="Duration">
-  </div>
-</div>
+    </div>
+    <!-- End Amount -->
 
-{% endblock %}
+    <!-- Duration -->
+    <label for="duration">Duration</label>
+    <div class="row">
+      <div class="col">
+        <input
+          type="number"
+          class="form-control"
+          name="duration_h"
+          id="duration_h"
+          placeholder="0"
+          aria-label="duration_h"
+        />
+      </div>
+      <p class="col">hours</p>
+      <div class="col">
+        <input
+          type="number"
+          class="form-control"
+          name="duration_m"
+          id="duration_m"
+          placeholder="0"
+          aria-label="duration_m"
+        />
+      </div>
+      <p class="col">minutes</p>
+    </div>
+    <!-- End Duration -->
+
+    <!-- Location -->
+    <label for="location">Location</label>
+    <select name="location" id="location" class="form-select">
+        <option value="home">home</option>
+        <option value="school">school</option>
+      </select>
+    <!-- End Location -->
+    <div align="center">
+      <button type="submit" class="btn btn-primary">Log Study</button>
+    </div>
+    </div>
+  </div>
+</div>
+  {% endblock %}
