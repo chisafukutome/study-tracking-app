@@ -2,12 +2,101 @@
 content %}
 
 <h1>Dashboard</h1>
-  <style>
-    h1, h2, h3, h4, h5, h6 {font-family: georgia, serif;}
-    body {font-family: Verdana, sans-serif;}
-  </style>
+<style>
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: georgia, serif;
+  }
+  body {
+    font-family: Verdana, sans-serif;
+  }
+</style>
 <!-- Progress Chart & Messages -->
-<h3>Progress</h3>
+<h3>Progress (Weekly)</h3>
+<!-- Chart Buttons -->
+<div class="chart-btns row">
+  <form method="POST" action="/change_chart">
+    <!-- y-axis (hours | tasks)-->
+    <div
+      class="btn-group col-2"
+      role="group"
+      aria-label="Basic radio toggle button group"
+    >
+      <input
+        type="radio"
+        class="btn-check form-control"
+        name="y_axis_ch"
+        id="hours_ch"
+        value="hours_ch"
+        autocomplete="off"
+        checked
+      />
+      <label class="btn btn-outline-primary" for="hours_ch">hours</label>
+
+      <input
+        type="radio"
+        class="btn-check form-control"
+        name="y_axis_ch"
+        id="tasks_ch"
+        value="tasks_ch"
+        autocomplete="off"
+      />
+      <label class="btn btn-outline-primary" for="tasks_ch">tasks</label>
+    </div>
+    <!-- End y-axis -->
+
+    <!-- x-axis (daily | weekly | monthly)-->
+    <div
+      class="btn-group col-2"
+      role="group"
+      aria-label="Basic radio toggle button group"
+    >
+      <input
+        type="radio"
+        class="btn-check form-control"
+        name="x_axis_ch"
+        id="daily_ch"
+        value="daily_ch"
+        autocomplete="off"
+        checked
+      />
+      <label class="btn btn-outline-primary" for="daily_ch">daily</label>
+
+      <input
+        type="radio"
+        class="btn-check form-control"
+        name="x_axis_ch"
+        id="weekly_ch"
+        value="weekly_ch"
+        autocomplete="off"
+      />
+      <label class="btn btn-outline-primary" for="weekly_ch">weekly</label>
+
+      <input
+        type="radio"
+        class="btn-check form-control"
+        name="x_axis_ch"
+        id="monthly_ch"
+        value="monthly_ch"
+        autocomplete="off"
+      />
+      <label class="btn btn-outline-primary" for="monthly_ch">monthly</label>
+    </div>
+    <!-- End x-axis -->
+    <div
+      class="col btn-group"
+      role="group"
+      style="margin-left: 25%; margin-top: 0"
+    >
+      <button type="submit" class="btn btn-primary">Chart</button>
+    </div>
+  </form>
+</div>
+<!-- End Chart Buttons -->
 
 <div class="progres row">
   <!-- Bar Chart -->
@@ -22,14 +111,14 @@ content %}
         <span class="material-symbols-outlined"> schedule </span>Time Studied
       </h5>
       <p>
-        <font>{{weekly_total.split(':')[0]}}</font> hours
-        <font>{{weekly_total.split(':')[1]}}</font> min (this week)
+        <font>{{time_studied.split(':')[0]}}</font> hours
+        <font>{{time_studied.split(':')[1]}}</font> min
       </p>
     </div>
     <h5>
       <span class="material-symbols-outlined"> task </span>Tasks Completed
     </h5>
-    <p><font>10</font> tasks (this week)</p>
+    <p><font>{{tasks_completed}}</font> tasks</p>
   </div>
 </div>
 <!-- End Progress Chart & Messages -->
@@ -42,9 +131,9 @@ content %}
     <div class="goal-chart">
       <canvas id="myPieChartTasks" width="400" height="400"></canvas>
     </div>
-    <button onclick="addTaskCompleted()"> Add Task Completed</button>
+    <button onclick="addTaskCompleted()">Add Task Completed</button>
     <!-- End Pie Chart -->
-    
+
     <p>You still need <font>5</font> more tasks.</p>
   </div>
   <div class="col">
@@ -52,7 +141,7 @@ content %}
     <div class="goal-chart">
       <canvas id="myPieChartDuration" width="400" height="400"></canvas>
     </div>
-    <button onclick="addHoursCompleted()"> Add Hours Completed</button>
+    <button onclick="addHoursCompleted()">Add Hours Completed</button>
     <!-- End Pie Chart -->
     <p>You still need <font>5</font> more hours.</p>
   </div>
@@ -128,16 +217,14 @@ content %}
     },
   });
 
-function addTaskCompleted() {
-  
-  if(myPieTasks.config.data.datasets[0].data[1] > 0)
-  {
-    myPieTasks.config.data.datasets[0].data[0] +=1;
-    myPieTasks.config.data.datasets[0].data[1] -=1;
-  }
+  function addTaskCompleted() {
+    if (myPieTasks.config.data.datasets[0].data[1] > 0) {
+      myPieTasks.config.data.datasets[0].data[0] += 1;
+      myPieTasks.config.data.datasets[0].data[1] -= 1;
+    }
 
-  myPieTasks.update();
-}
+    myPieTasks.update();
+  }
 </script>
 <!-- End Pie Chart JS -->
 
@@ -175,14 +262,12 @@ function addTaskCompleted() {
   });
 
   function addHoursCompleted() {
-  
-  if(myPieDuration.config.data.datasets[0].data[1] > 0)
-  {
-    myPieDuration.config.data.datasets[0].data[0] +=1;
-    myPieDuration.config.data.datasets[0].data[1] -=1;
-  }
+    if (myPieDuration.config.data.datasets[0].data[1] > 0) {
+      myPieDuration.config.data.datasets[0].data[0] += 1;
+      myPieDuration.config.data.datasets[0].data[1] -= 1;
+    }
 
-  myPieDuration.update();
-}
+    myPieDuration.update();
+  }
 </script>
 {% endblock %}
