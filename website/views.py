@@ -4,12 +4,28 @@ from website import db, bcrypt
 from website.models import Study, User, SavedMarker
 from datetime import datetime, timedelta
 import json
+import sys
+from website.user import UserData
 from sqlalchemy import func
 
-EXAMPLE_USER_ID = 123456789
+# EXAMPLE_USER_ID = 123456789
+CURR_USER = UserData(None)
 
 
 views = Blueprint("views", __name__)
+
+
+def load_user_data(input):
+    CURR_USER.login(User.query.filter_by(id=input).first())
+
+
+def check_user_exists(input):
+    user_entry = User.query.filter_by(uname=input).all()
+    if len(user_entry) == 0:
+        user_entry = User.query.filter_by(email=input).all()
+        if len(user_entry) == 0:
+            return None
+    return user_entry
 
 
 def saveMarkers(markers):
@@ -18,7 +34,7 @@ def saveMarkers(markers):
             f.write(f'{m}\n')
 
     for item in markers:
-        marker = SavedMarker(user_id=EXAMPLE_USER_ID, long=item[0], lat=item[1])
+        marker = SavedMarker(user_id=CURR_USER.data.id, long=item[0], lat=item[1])
         db.session.add(marker)
         db.session.commit()
 
@@ -63,7 +79,6 @@ def home():
     return render_template("home.html", x_axis=json.dumps(x_axis[::-1]), y_axis=json.dumps(y_axis[::-1]), weekly_total=weekly_total)
 
 
-
 @views.route("/log_study", methods=['GET', 'POST'])
 def log_study():
     # Get data from study_log.html
@@ -89,33 +104,35 @@ def log_study():
 @views.route("/create_account", methods=['GET', 'POST'])
 def create():
     if request.method == 'POST':
-        # Check if user exists
-        # if not, hash password and create account
+        if check_user_exists(request.form['uname']) or check_user_exists(request.form['email']):
+            flash("Username/email already in use!", "danger")
+            return redirect(url_for('views.create'))
+
         passw_hash = bcrypt.generate_password_hash(request.form['passwd']).decode('utf-8')
-        user = User(name=request.form['name'], uname=request.form['uname'], email=request.form['email'], passw=passw_hash)
+        user = User(
+            name=request.form['name'],
+            uname=request.form['uname'],
+            email=request.form['email'],
+            passw=passw_hash
+        )
         db.session.add(user)
         db.session.commit()
-        # pass
-        return render_template('home.html')
+
+        return redirect('home')
     return render_template('create_account.html')
 
+# print(user_entry[0].passw, file=sys.stderr)
 
 @views.route("/login", methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        # Check if password is correct for user
-        input = request.form['user_input']
-        user_entry = User.query.filter_by(uname=input).first()
-        if user_entry is None:
-            flash("Invalid Username or password!", "danger")
-            return redirect(url_for('views.login'))
+        user_entry = check_user_exists(request.form['user_input'])
+        if user_entry is None or not bcrypt.check_password_hash(user_entry[0].passw, request.form['passwd']):
+            flash("Invalid Username or password1", "danger")
+            return redirect(url_for('login'))
 
-        hash = user_entry.passw
-        if hash != bcrypt.generate_password_hash(request.form['passwd']).decode('utf-8'):
-            flash("Invalid Username or password!", "danger")
-            return redirect(url_for('views.login'))
-        # load user data
-        # return render_template('home.html')
+        load_user_data(user_entry[0].id)
+        return redirect('home')
     return render_template('login.html')
 
 
