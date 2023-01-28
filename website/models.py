@@ -1,5 +1,6 @@
-from . import db
+from website import db
 from sqlalchemy.sql import func
+
 
 class Study(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -12,3 +13,20 @@ class Study(db.Model):
 
     # TODO: unique with id
     location = db.Column(db.String(150))
+
+
+class User(db.Model):
+    __bind_key__ = 'user'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+    uname = db.Column(db.String(50), nullable=False, unique=True)
+    email = db.Column(db.String(50), nullable=False, unique=True)
+    passw = db.Column(db.Integer, nullable=False)
+
+
+class SavedMarker(db.Model):
+    __bind_key__ = 'markers'
+    marker_id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer)
+    long = db.Column(db.Integer)
+    lat = db.Column(db.Integer)

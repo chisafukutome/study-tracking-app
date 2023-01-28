@@ -48,7 +48,7 @@
 
         function saveMarkers() {
             const Http = new XMLHttpRequest();
-            const url='{{ url_for('views.map') }}';
+            const url='{{ url_for('map') }}';
             Http.open("POST", url);
             Http.setRequestHeader('Content-Type', 'application/json');
             Http.send(JSON.stringify({"values": markers}));

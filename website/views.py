@@ -1,24 +1,33 @@
 """ Service related functions """
 from flask import Blueprint, render_template, request, redirect, url_for
-from . import db
-from .models import Study
+from website import app, db
+from website.models import Study, User, SavedMarker
 from datetime import datetime
 
-views = Blueprint("views", __name__)
+EXAMPLE_USER_ID = 123456789
+
+
+# views = Blueprint("views", __name__)
 
 
 def saveMarkers(markers):
     with open('markers.txt', 'w') as f:
         for m in markers:
-            f.write(f'{m}\n')    
+            f.write(f'{m}\n')
+
+    for item in markers:
+        marker = SavedMarker(user_id=EXAMPLE_USER_ID, long=item[0], lat=item[1])
+        db.session.add(marker)
+        db.session.commit()
 
 
-@views.route("/")
-@views.route("home")
+@app.route("/")
+@app.route("/home")
 def home():
     return render_template("home.html")
 
-@views.route("/log_study", methods=['GET', 'POST'])
+
+@app.route("/log_study", methods=['GET', 'POST'])
 def log_study():
     # Get data from study_log.html
     if request.method == "POST":
@@ -35,14 +44,12 @@ def log_study():
         db.session.add(study)
         db.session.commit()
 
-        return redirect(url_for('views.home'))
-        
+        return redirect(url_for('home'))
+
     return render_template("study_log.html")
 
 
-
-
-@views.route("/map", methods=['GET', 'POST'])
+@app.route("/map", methods=['GET', 'POST'])
 def map():
     if request.method == 'POST':
         saveMarkers(request.json['values'])
