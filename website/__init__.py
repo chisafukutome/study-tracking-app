@@ -26,7 +26,7 @@ def create_app():
 
     # Create tables
     from .models import Study
-    create_db(app)
+    # create_db(app)
     # End Create tables
 
     # Register files
@@ -36,7 +36,7 @@ def create_app():
     return app
 
 # Create a database
-def create_db(app):
-    if not path.exists("website/" + STUDY_DB):
-        db.create_all(app=app)
-        print("db created.")
+# def create_db(app):
+#     if not path.exists("website/" + STUDY_DB):
+#         db.create_all(app=app)
+#         print("db created.")

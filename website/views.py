@@ -1,6 +1,6 @@
 """ Service related functions """
 from flask import Blueprint, render_template, request, redirect, url_for
-from website import app, db
+from website import db
 from website.models import Study, User, SavedMarker
 from datetime import datetime, timedelta
 import json
@@ -81,7 +81,7 @@ def log_study():
         db.session.add(study)
         db.session.commit()
 
-        return redirect(url_for('home'))
+        return redirect(url_for('views.home'))
 
     return render_template("study_log.html")
 
