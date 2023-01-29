@@ -21,6 +21,7 @@ def login_check():
 
 def load_user_data(input):
     CURR_USER.login(User.query.filter_by(id=input).first())
+    login_check()
 
 
 def check_user_exists(input):
@@ -44,19 +45,19 @@ def saveMarkers(markers):
 def calc_xy(y, x):
     x_axis, y_axis = [], []
     tasks_completed, time_studied = 0, 0
-    end_day = datetime.today().date() 
+    end_day = datetime.today().date()
 
     x_dict = {'daily_ch': 1, 'weekly_ch': 6, 'monthly_ch': 30}
-    
+
     if not x_dict[x] == 1:
         start_day = end_day - timedelta(days=x_dict[x])
-    
+
     for i in range(7):
         if x_dict[x] == 1:
-            studies = Study.query.filter(func.DATE(Study.date) == end_day).all()
+            studies = Study.query.filter(func.DATE(Study.date) == end_day, Study.user_id == CURR_USER.id).all()
         else:
             # Extract study log data that is on the specific date
-            studies = Study.query.filter(func.DATE(Study.date) >= start_day, func.DATE(Study.date) <= end_day).all()
+            studies = Study.query.filter(func.DATE(Study.date) >= start_day, func.DATE(Study.date, Study.user_id == CURR_USER.id) <= end_day).all()
         
         total_h = 0
         if studies:
@@ -111,8 +112,8 @@ def home():
     login_check()
     if not session['logged_in']:
         return redirect(url_for('views.login'))
-    xy_data = calc_xy('hours_ch', 'daily_ch')
 
+    xy_data = calc_xy('hours_ch', 'daily_ch')
     return render_template("home.html", x_axis=json.dumps(xy_data['x_axis'][::-1]), y_axis=json.dumps(xy_data['y_axis'][::-1]), time_studied=xy_data['time_studied'], tasks_completed=xy_data['tasks_completed'])
 
 
@@ -122,6 +123,7 @@ def log_study():
     # Get data from study_log.html
     if request.method == "POST":
         date = datetime.strptime(request.form.get('date'), "%Y-%m-%d")
+        user_id = CURR_USER.id
         task = request.form.get('task')
         amount = request.form.get('amount')
         unit = request.form.get('unit')
@@ -130,7 +132,7 @@ def log_study():
         location = request.form.get('location')
 
         # Add to db
-        study = Study(date=date, task=task, amount=amount, unit=unit, duration_h=duration_h, duration_m=duration_m, location=location)
+        study = Study(user_id=user_id, date=date, task=task, amount=amount, unit=unit, duration_h=duration_h, duration_m=duration_m, location=location)
         db.session.add(study)
         db.session.commit()
 
