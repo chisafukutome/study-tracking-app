@@ -197,16 +197,19 @@ def map():
                 print(name, file=sys.stderr)
                 coords.append([m.long, m.lat, name])
             return render_template('map.html', saved=coords)
+
         elif 'delete_all' in request.form:
             trash = SavedMarker.query.filter_by(user_id=CURR_USER.id).all()
             for t in trash:
                 db.session.delete(t)
             db.session.commit()
+
         else:
             if not CURR_USER.id:
                 flash("Not Logged In!", "danger")
                 return redirect(url_for('views.map'))
             saveMarkers(request.json['values'])
+
     elif CURR_USER.id:
         markers = SavedMarker.query.filter_by(user_id=CURR_USER.id).all()
         for m in markers:
