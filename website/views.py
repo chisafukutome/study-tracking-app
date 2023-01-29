@@ -54,10 +54,10 @@ def calc_xy(y, x):
 
     for i in range(7):
         if x_dict[x] == 1:
-            studies = Study.query.filter(func.DATE(Study.date) == end_day, Study.user_id == CURR_USER.id).all()
+            studies = Study.query.filter(func.DATE(Study.date) == end_day).all()
         else:
             # Extract study log data that is on the specific date
-            studies = Study.query.filter(func.DATE(Study.date) >= start_day, func.DATE(Study.date, Study.user_id == CURR_USER.id) <= end_day).all()
+            studies = Study.query.filter(func.DATE(Study.date) >= start_day, func.DATE(Study.date) <= end_day).all()
         
         total_h = 0
         if studies:
@@ -226,6 +226,7 @@ def change_chart():
         y_axis_ch = request.form.get('y_axis_ch')
 
         xy_data = calc_xy(y_axis_ch, x_axis_ch)
+        print("---------------------", xy_data['x_axis'], xy_data['y_axis'])
 
     # TODO: UPDATE the frontend
     return render_template("home.html", x_axis=json.dumps(xy_data['x_axis'][::-1]), y_axis=json.dumps(xy_data['y_axis'][::-1]), time_studied=xy_data['time_studied'], tasks_completed=xy_data['tasks_completed'])

@@ -73,6 +73,8 @@
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="/home">Home</a>
             </li>
+
+            {% if session['logged_in'] == True %}
             <li class="nav-item">
               <a class="nav-link" href="/map">Location</a>
             </li>
@@ -82,7 +84,6 @@
             <li class="nav-item">
               <a class="nav-link" href="/virtual_study_space">Virtual Study Space</a>
             </li>
-            {% if session['logged_in'] == True %}
             <li>
               <a class="nav-link" href="/logout">Logout</a>
             </li>
