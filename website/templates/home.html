@@ -2,19 +2,6 @@
 content %}
 
 <h1>Dashboard</h1>
-<style>
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-family: georgia, serif;
-  }
-  body {
-    font-family: Verdana, sans-serif;
-  }
-</style>
 <!-- Progress Chart & Messages -->
 <h3>Progress (Weekly)</h3>
 <!-- Chart Buttons -->
@@ -131,12 +118,8 @@ content %}
     <div class="goal-chart">
       <canvas id="myPieChartTasks" width="400" height="400"></canvas>
     </div>
-<<<<<<< HEAD
-    <button onclick="addTaskCompleted()">Add Task Completed</button>
-=======
     <button onclick="addTaskCompleted()"> Add Task Completed</button>
     <button onclick="addTaskReamining()"> Add Task Remaining</button>
->>>>>>> 2043002b279b4b2d4c742ac56950900f6491a427
     <!-- End Pie Chart -->
 
     <p>You still need <font>5</font> more tasks.</p>
@@ -146,12 +129,8 @@ content %}
     <div class="goal-chart">
       <canvas id="myPieChartDuration" width="400" height="400"></canvas>
     </div>
-<<<<<<< HEAD
-    <button onclick="addHoursCompleted()">Add Hours Completed</button>
-=======
     <button onclick="addHoursCompleted()"> Add Hours Completed</button>
     <button onclick="addHoursRemaining()"> Add Hours Completed</button>
->>>>>>> 2043002b279b4b2d4c742ac56950900f6491a427
     <!-- End Pie Chart -->
     <p>You still need <font>5</font> more hours.</p>
   </div>
@@ -233,10 +212,6 @@ content %}
       myPieTasks.config.data.datasets[0].data[1] -= 1;
     }
 
-<<<<<<< HEAD
-    myPieTasks.update();
-  }
-=======
   myPieTasks.update();
 }
 
@@ -250,7 +225,7 @@ function addTaskReamining() {
 
   myPieTasks.update();
 }
->>>>>>> 2043002b279b4b2d4c742ac56950900f6491a427
+
 </script>
 <!-- End Pie Chart JS -->
 
@@ -293,10 +268,7 @@ function addTaskReamining() {
       myPieDuration.config.data.datasets[0].data[1] -= 1;
     }
 
-<<<<<<< HEAD
-    myPieDuration.update();
-  }
-=======
+
   myPieDuration.update();
 }
 
@@ -310,6 +282,5 @@ function addHoursRemaining() {
 
   myPieDuration.update();
 }
->>>>>>> 2043002b279b4b2d4c742ac56950900f6491a427
 </script>
 {% endblock %}
