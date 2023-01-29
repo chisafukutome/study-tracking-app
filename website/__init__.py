@@ -10,6 +10,7 @@ MARKERS_DB = "user_markers.db"
 db = SQLAlchemy(session_options={"autoflush": False})
 bcrypt = Bcrypt()
 
+
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'helloworld'
@@ -23,7 +24,7 @@ def create_app():
     bcrypt.init_app(app)
 
     # Create tables
-    from .models import Study
+    from .models import Study, User, SavedMarker
     create_db(app)
     # End Create tables
 
@@ -33,8 +34,11 @@ def create_app():
     # End Register files
     return app
 
+
 # Create a database
 def create_db(app):
-    if not path.exists("website/" + STUDY_DB):
-        db.create_all(app=app)
+    databases = [STUDY_DB, USER_DB, MARKERS_DB]
+    if not all(path.exists("instance/" + p) for p in databases):
+        with app.app_context():
+            db.create_all()
         print("db created.")

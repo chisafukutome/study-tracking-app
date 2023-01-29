@@ -1,46 +1,56 @@
 {% extends "base.html" %} 
 {% block content %}
-    <head>
-        <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-        <!-- <script type="module" src="{{ url_for('static', filename='js/map.js') }}"></script> -->
-    </head>
-    <body>
-        <div class="row">
-            {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                {% for message in messages %}
-                <div class="alert alert-danger" role="alert">
-                    {{ message }}
-                </div>
-                {% endfor %}
-            {% endif %}
-            {% endwith %}
-        </div>
-        <div class="row">
-            <div class="col text-center">
-                <button class="btn btn-primary" onclick="saveMarkers()" style="#E8B59C">Submit</button>
+<div class="container">
+    <div class="row">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-danger" role="alert">
+                {{ message }}
             </div>
-            <div class="col text-center">
-                <form method="post">
-                    <button class="btn btn-success" name="show_all" value="all" style="#E8B59C">Show All</button>
-                </form>
-            </div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
+    <div class="row pb-2">
+        <div class="col text-center">
+            <button class="btn btn-primary" onclick="saveMarkers()">Submit</button>
         </div>
-        <div class="row p-3">
+        <div class="col text-center">
+            <button type="button" class="btn btn-info" id="addMarkerName" onclick="toggle();">New</button>
+        </div>
+        <div class="col text-center" id="MarkerNameElement" hidden="hidden">
+            <input type="text" class="form-control" id="MarkerName" name="name_input" placeholder="marker name">
+        </div>
+        <div class="col text-center">
+            <form method="post">
+                <button class="btn btn-success" name="show_all" value="all">Show All</button>
+            </form>
+        </div>
+        <div class="col text-center">
+            <form method="post">
+                <button class="btn btn-dark" name="delete_all" value="delete" onclick="deleteMarkers()">Clear</button>
+            </form>
+        </div>
+    </div>
+    <div class="row p-3">
+        <div class="map-container">
             <div id="map"></div>
             <style>
                 #map {
                     height: 500px;
                     width: 100%;
                 }
-                </style>
+            </style>
             <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpXMc7uBSenUYzZT8-qvDHBX_njqP6XH0&callback=initMap&v=weekly" defer></script>
         </div>
-    </body>
+    </div>
     <script>
         let map;
         let markers = [];
-
+        let curr_ = [];
+        let curr_name = "{{ name }}";
+        
         function initMap() {
             map = new google.maps.Map(document.getElementById("map"), {
                 center: { lat: 29.6436, lng: -82.3549 },
@@ -48,22 +58,40 @@
             });
 
             map.addListener("click", (event) => {
-                addMarker(event.latLng);
+                addMarker(document.getElementById("MarkerName").value, event.latLng);
+                toggle();
+                document.getElementById('MarkerName').value = ''
             });
 
             {% for m in saved %}
-            console.log({{ m }});
-            addMarker({ lat: {{ m[0] }}, lng: {{ m[1] }}});
+            addMarker("{{ m[2] }}", { lat: {{ m[0] }}, lng: {{ m[1] }}});
             {% endfor %}
         }
 
-        function addMarker(position) {
+        function addMarker(fname, position) {
             const marker = new google.maps.Marker({
                 position,
                 map,
             });
+
+            const infowindow = new google.maps.InfoWindow({
+                content: fname,
+            });
+
+            marker.addListener("click", () => {
+                infowindow.open(marker.get("map"), marker);
+            });
             
-            markers.push([marker.getPosition().lat(), marker.getPosition().lng()]);
+            curr_.push(marker);
+            markers.push([marker.getPosition().lat(), marker.getPosition().lng(), fname]);
+        }
+
+        function deleteMarkers() {
+            for (let i = 0; i < markers.length; i++) {
+                curr_[i].setMap(null);
+            }
+            curr_ = [];
+            markers = [];
         }
 
         function saveMarkers() {
@@ -77,4 +105,19 @@
 
         window.initMap = initMap;
     </script>
+    <script>
+        let toggle = () => {
+            let name_box = document.getElementById("MarkerNameElement");
+            let hidden = name_box.getAttribute("hidden");
+
+            if (hidden) {
+                console.log(hidden)
+                name_box.removeAttribute("hidden");
+            } else {
+                console.log(hidden)
+                name_box.setAttribute("hidden", "hidden");
+            }
+        }
+    </script>
+</div>
 {% endblock %}

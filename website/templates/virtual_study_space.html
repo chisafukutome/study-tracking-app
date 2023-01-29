@@ -201,6 +201,10 @@ window.onload = function(){
       <div id="filler"></div>
     </div>
 
+    <div class="col text-center">
+      <h1 class="display-4" id="demo"></h1>
+    </div>
+
     <div id="buttons" class="button">
       <button id="work" onclick="countdown">Work</button>
       <button id="shortBreak">Short Break</button>
@@ -229,6 +233,25 @@ window.onload = function(){
                 </span>  
             </audio>
         </p>
-        
+        <script>
+          function timer(amount_input) {
+              function set_timer() {
+                  document.getElementById("demo").innerHTML = Math.floor(amount / 60) + ":" + (amount % 60);
+                  
+                  if (amount < 0) {
+                      clearInterval(x);
+                      document.getElementById("demo").innerHTML = "Done";
+                      var audio = new Audio('../static/media/TimerDone.mp3');
+                      audio.play();
+                  } else {
+                      amount = amount - 1;
+                  }
+              }
+      
+              // var amount = document.getElementById("time_input").value;
+              var amount = amount_input * 60
+              var x = setInterval(set_timer, 1000);
+          }
+      </script>
     </div>
 </div>
