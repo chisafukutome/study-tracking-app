@@ -225,8 +225,8 @@ def change_chart():
         xy_data = calc_xy(y_axis_ch, x_axis_ch)
 
     # TODO: UPDATE the frontend
+    return render_template("home.html", x_axis=json.dumps(xy_data['x_axis'][::-1]), y_axis=json.dumps(xy_data['y_axis'][::-1]), time_studied=xy_data['time_studied'], tasks_completed=xy_data['tasks_completed'])
 
-    return redirect(url_for('views.home', x_axis=json.dumps(xy_data['x_axis'][::-1]), y_axis=json.dumps(xy_data['y_axis'][::-1]), time_studied=xy_data['time_studied'], tasks_completed=xy_data['tasks_completed']))
 
 @views.route("/virtual_study_space", methods=['GET', 'POST'])
 def virtual_study_space():
