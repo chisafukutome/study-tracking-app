@@ -135,7 +135,9 @@ def log_study():
 
         return redirect(url_for('views.home'))
 
-    return render_template("study_log.html")
+    locations = SavedMarker.query.filter_by(user_id=CURR_USER.id).all()
+    labels = [l.label for l in locations]
+    return render_template("study_log.html", locations=labels)
 
 
 @views.route("/create_account", methods=['GET', 'POST'])
