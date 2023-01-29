@@ -4,6 +4,43 @@
     }
 </style>
 
+  <!--Audio-->
+  <div class = "audioandimage">
+    <div class = "audiobox">
+        <p>
+            <audio controls autoplay; loop>
+                <source src="https://storage.cloudconvert.com/tasks/f5f942cd-4210-43d0-a15e-ef8775e17c03/Rain-and-thunder-loop%5B1%5D.wav?AWSAccessKeyId=cloudconvert-production&Expires=1675035980&Signature=Bnwo66x7lq6q6kPfJyyiGyrzkF4%3D&response-content-disposition=attachment%3B%20filename%3D%22Rain-and-thunder-loop%5B1%5D.wav%22&response-content-type=audio%2Fwav" type="audio/wav">
+                Your browser does not support the audio element.
+                <button id = "play1" class = "button" onclick = "playSound(1)">&#9658</button>
+                    Rainy Weather
+                <span class = "volumeslider"><img class = "volume" src = "assets/volume.svg", width="16px">
+                <input type="range" id="volume1" onchange = "changeVolume(1)">
+                </span>  
+            </audio>
+        </p>
+        <script>
+          function timer(amount_input) {
+              function set_timer() {
+                  document.getElementById("demo").innerHTML = Math.floor(amount / 60) + ":" + (amount % 60);
+                  
+                  if (amount < 0) {
+                      clearInterval(x);
+                      document.getElementById("demo").innerHTML = "Done";
+                      var audio = new Audio('../static/media/TimerDone.mp3');
+                      audio.play();
+                  } else {
+                      amount = amount - 1;
+                  }
+              }
+      
+              // var amount = document.getElementById("time_input").value;
+              var amount = amount_input * 60
+              var x = setInterval(set_timer, 1000);
+          }
+      </script>
+    </div>
+</div>
+
 <body>
     <float:right>
     <!--HTML-->
@@ -188,44 +225,8 @@ window.onload = function(){
     </float:right>
 </body>
 
-<HTML>
-    <HEAD> <TITLE>Activity - Insert animated GIF to HTML</TITLE> </HEAD>
     <BODY>
-      <IMG SRC="https://i.pinimg.com/originals/8d/f2/2d/8df22db5403a9f820a56788f10c9a9de.gif">
+      <imgalign="right">
+        <IMG SRC="https://i.pinimg.com/originals/8d/f2/2d/8df22db5403a9f820a56788f10c9a9de.gif">
+     </imgalign>
     </BODY>
-    </HTML>
-<div class = "audioandimage">
-    <div class = "audiobox">
-        <p>
-            <audio controls autoplay; loop>
-                <source src="https://storage.cloudconvert.com/tasks/f5f942cd-4210-43d0-a15e-ef8775e17c03/Rain-and-thunder-loop%5B1%5D.wav?AWSAccessKeyId=cloudconvert-production&Expires=1675035980&Signature=Bnwo66x7lq6q6kPfJyyiGyrzkF4%3D&response-content-disposition=attachment%3B%20filename%3D%22Rain-and-thunder-loop%5B1%5D.wav%22&response-content-type=audio%2Fwav" type="audio/wav">
-                Your browser does not support the audio element.
-                <button id = "play1" class = "button" onclick = "playSound(1)">&#9658</button>
-                    Rainy Weather
-                <span class = "volumeslider"><img class = "volume" src = "assets/volume.svg", width="16px">
-                <input type="range" id="volume1" onchange = "changeVolume(1)">
-                </span>  
-            </audio>
-        </p>
-        <script>
-          function timer(amount_input) {
-              function set_timer() {
-                  document.getElementById("demo").innerHTML = Math.floor(amount / 60) + ":" + (amount % 60);
-                  
-                  if (amount < 0) {
-                      clearInterval(x);
-                      document.getElementById("demo").innerHTML = "Done";
-                      var audio = new Audio('../static/media/TimerDone.mp3');
-                      audio.play();
-                  } else {
-                      amount = amount - 1;
-                  }
-              }
-      
-              // var amount = document.getElementById("time_input").value;
-              var amount = amount_input * 60
-              var x = setInterval(set_timer, 1000);
-          }
-      </script>
-    </div>
-</div>
