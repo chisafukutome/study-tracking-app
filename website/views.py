@@ -86,18 +86,19 @@ def calc_xy(y, x):
         if y == 'hours_ch':
             y_axis.append(total_h)
             # Tasks Completed
-            if i == 0:
-                tasks_completed = len(studies)
                 # Time Studied
-                time_studied = y_axis[0]
+            time_studied += y_axis[i]
+            tasks_completed += len(studies)
+            if i == 6:
                 time_studied = f"{int(time_studied)}:{int((time_studied % 1) * 60)}"
+                print(time_studied, file=sys.stderr)
         # End Time Studied
         else:
             y_axis.append(len(studies))
             # Tasks Completed
-            tasks_completed = y_axis[0]
-            if i == 0:
-                time_studied = total_h
+            time_studied = total_h
+            tasks_completed += y_axis[i]
+            if i == 6:
                 time_studied = f"{int(time_studied)}:{int((time_studied % 1) * 60)}"
 
     return {
