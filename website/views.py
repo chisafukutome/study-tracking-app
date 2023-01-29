@@ -1,7 +1,7 @@
 """ Service related functions """
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from website import db, bcrypt
-from website.models import Study, User, SavedMarker
+from website.models import Study, User, SavedMarker, Goal
 from datetime import datetime, timedelta
 import json
 import sys
@@ -112,11 +112,33 @@ def calc_xy(y, x):
 @views.route("/")
 @views.route("/home")
 def home():
+
+    goal_list = []
     login_check()
     if not session['logged_in']:
         return redirect(url_for('views.login'))
 
     xy_data = calc_xy('hours_ch', 'daily_ch')
+    goal = Goal.query.first()
+
+    today = datetime.today().date()
+
+    if not goal:
+        goal_list = [-1]
+    elif today > goal.exp_date or (goal.rem_m == 0 and goal.rem_task == 0):
+        # delete the goal when it expires
+        db.session.delete(goal)
+        db.session.commit()
+        goal_list = [-1]
+    else:
+        # goal_task, rem_task, goal-min, rem_min
+        goal_list.append(goal.goal_task)
+        goal_list.append(goal.rem_task)
+        goal_list.append(goal.goal_m)
+        goal_list.append(goal.rem_m)
+
+
+
     return render_template(
         "home.html",
         name=CURR_USER.data.name,
@@ -125,7 +147,7 @@ def home():
         time_studied=xy_data['time_studied'],
         tasks_completed=xy_data['tasks_completed'],
         unit=xy_data['unit'],
-        y_unit='hours_ch'
+        y_unit='hours_ch', goal_list=json.dumps(goal_list), goal=goal
     )
 
 
@@ -142,6 +164,29 @@ def log_study():
         duration_h = request.form.get('duration_h')
         duration_m = request.form.get('duration_m')
         location = request.form.get('location')
+
+        print(duration_h, duration_m)
+
+        # if there is no value, assign 0
+        duration_h = 0 if duration_h == "" else duration_h
+        duration_m = 0 if duration_m == "" else duration_m
+
+        duration = int(duration_h) * 60 + int(duration_m)
+
+
+        # Update Goal
+        goal = Goal.query.get(1)
+
+        # updates only when within the set time
+        if date.date() >= goal.date and date.date() <= goal.exp_date:
+            goal.rem_task -= 1
+            goal.rem_m -= duration
+
+            if goal.rem_task < 0:
+                goal.rem_task = 0
+            if goal.rem_m < 0:
+                goal.rem_m = 0
+            db.session.commit()
 
         # Add to db
         study = Study(user_id=user_id, date=date, task=task, amount=amount, unit=unit, duration_h=duration_h, duration_m=duration_m, location=location)
@@ -240,6 +285,7 @@ def change_chart():
     y_axis_ch = request.form.get('y_axis_ch')
 
     xy_data = calc_xy(y_axis_ch, x_axis_ch)
+    print("------------------------", xy_data['x_axis'], xy_data['y_axis'])
 
     return render_template(
         "home.html",
@@ -258,3 +304,27 @@ def virtual_study_space():
     login_check()
     # Get data from virtual_study_space.html
     return render_template("virtual_study_space.html")
+
+
+@views.route("/set_goal", methods=['GET', 'POST'])
+def set_goal():
+    login_check()
+    
+    today = datetime.today().date()
+    one_wk = today +  timedelta(days=7)
+
+    # Get data from home.html
+    if request.method == "POST":
+        date = datetime.strptime(str(today), "%Y-%m-%d")
+        exp_date = datetime.strptime(str(one_wk), "%Y-%m-%d")
+        goal_task = request.form.get('goal_task')
+        goal_m = str(int(request.form.get('goal_m')) + int(request.form.get('goal_h')) * 60)
+        rem_task = request.form.get('goal_task')
+        rem_m = goal_m
+
+
+        # Add to the db (Goal)
+        goal = Goal(date=date, goal_task=goal_task, goal_m=goal_m, rem_m=rem_m, rem_task=rem_task, exp_date=exp_date)
+        db.session.add(goal)
+        db.session.commit()
+    return redirect(url_for('views.home'))

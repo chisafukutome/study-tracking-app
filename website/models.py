@@ -13,6 +13,14 @@ class Study(db.Model):
     duration_m = db.Column(db.Integer, default=0)
     location = db.Column(db.String(150))
 
+class Goal(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.Date, default=func.now())
+    exp_date = db.Column(db.Date)
+    goal_task = db.Column(db.Integer)
+    rem_task = db.Column(db.Integer)
+    goal_m = db.Column(db.Integer)
+    rem_m = db.Column(db.Integer)
 
 class User(db.Model):
     __bind_key__ = 'user'

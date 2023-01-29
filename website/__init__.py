@@ -24,7 +24,7 @@ def create_app():
     bcrypt.init_app(app)
 
     # Create tables
-    from .models import Study, User, SavedMarker
+    from .models import Study, User, SavedMarker, Goal
     create_db(app)
     # End Create tables
 

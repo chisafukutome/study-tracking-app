@@ -125,34 +125,102 @@ content %}
     </div>
     <!-- End Progress Chart & Messages -->
   </div>
-  <div class="row">
-    <!-- Goal Chart & Messages -->
-    <h2 class="text-center">Goals (weekly)</h2>
-    <div class="goal row text-center p-2">
-      <div class="col">
-        <!-- Pie Chart -->
-        <div class="goal-chart p-4">
-          <canvas id="myPieChartTasks" width="400" height="400"></canvas>
-        </div>
-        <button onclick="addTaskCompleted()">Add Task Completed</button>
-        <button onclick="addTaskReamining()">Add Task Remaining</button>
-        <!-- End Pie Chart -->
 
-        <p>You still need <font>5</font> more tasks.</p>
-      </div>
+
+  <!-- --------------------------------------------------------------------------------------- -->
+
+    <!-- Goal Chart & Messages -->
+
+{% if not goal: %}
+<h3>Weekly Goals</h3>
+<div class="goal-form" style="width: 80%; margin: 5% 10% auto auto">
+  <h5 align="center">Please Enter Your Goals.</h5>
+  <form class="g-3" method="POST" action="/set_goal">
+    <!-- Amount -->
+    <label for="amount">Tasks</label>
+        <input
+          type="number"
+          class="form-control"
+          name="goal_task"
+          id="goal_task"
+          placeholder="0"
+          aria-label="goal_task"
+          min=0 oninput="validity.valid||(value='');"
+        />
+    <!-- End Amount -->
+
+    <!-- Duration -->
+    <label for="duration">Duration</label>
+    <div class="row">
       <div class="col">
-        <!-- Pie Chart -->
-        <div class="goal-chart p-4">
-          <canvas id="myPieChartDuration" width="400" height="400"></canvas>
-        </div>
-        <button onclick="addHoursCompleted()">Add Hours Completed</button>
-        <button onclick="addHoursRemaining()">Add Hours Remaining</button>
-        <!-- End Pie Chart -->
-        <p>You still need <font>5</font> more hours.</p>
+        <input
+          type="number"
+          class="form-control"
+          name="goal_h"
+          id="goal_h"
+          placeholder="0"
+          aria-label="goal_h"
+          min=0 oninput="validity.valid||(value='');"
+        />
       </div>
+      <p class="col">hours</p>
+      <div class="col">
+        <input
+          type="number"
+          class="form-control"
+          name="goal_m"
+          id="goal_m"
+          placeholder="0"
+          aria-label="goal_m"
+          min=0 max=59 oninput="validity.valid||(value='');"
+        />
+      </div>
+      <p class="col">minutes</p>
     </div>
-    <!-- end Goal Chart & Messages -->
+    <!-- End Duration -->
+    <div align="center">
+      <button type="submit" class="btn btn-light" style="background-color: #E8B59C; border: none;">Set Goal</button>
+    </div>
+    </div>
+</form>
+</div>
+{% else: %}
+<h3>Weekly Goals</h3>
+<p>{{goal.date}} - {{goal.exp_date}}</p>
+<div class="row">
+  <!-- Goal Chart & Messages -->
+
+  <div class="goal row text-center p-2">
+    <div class="col">
+      <!-- Pie Chart -->
+      <div class="goal-chart p-4">
+        <canvas id="myPieChartTasks" width="300" height="300"></canvas>
+      </div>
+
+      <!-- End Pie Chart -->
+      {% if goal.rem_task == 0 %}
+      <p><font>Congratulations!</font> You've achieved a goal!!</p>
+      {% else %}
+      <p>You still need <font>{{goal.rem_task}}</font> more tasks.</p>
+      {% endif %}
+    </div>
+    <div class="col">
+      <!-- Pie Chart -->
+      <div class="goal-chart p-4">
+        <canvas id="myPieChartDuration" width="300" height="300"></canvas>
+      </div>
+      <!-- End Pie Chart -->
+      {% if goal.rem_m == 0 %}
+      <p><font>Congratulations!</font> You've achieved a goal!!</p>
+      {% else %}
+      <p>You still need <font>{{goal.rem_m // 60}}</font> hours <font>{{goal.rem_m % 60}}</font> min</p>
+      {% endif %}
+    </div>
   </div>
+  <!-- end Goal Chart & Messages -->
+</div>
+{% endif %}
+
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
@@ -200,6 +268,11 @@ content %}
   <!--PIE CHART JS-->
   <script>
     const ctx1 = document.getElementById("myPieChartTasks");
+    // goal_task, rem_task, goal-min, rem_min
+    let goal_list = JSON.parse({{goal_list | tojson}});
+    let completed = goal_list[0] - goal_list[1];
+    let rem = goal_list[1];
+
 
     const myPieTasks = new Chart(ctx1, {
       type: "pie",
@@ -208,7 +281,7 @@ content %}
         datasets: [
           {
             label: "# of Tasks",
-            data: [20, 5],
+            data: [completed, rem],
             backgroundColor: ["#E8B59C", "#E8E3D9"],
             borderWidth: 1,
           },
@@ -253,6 +326,9 @@ content %}
 
   <script>
     const ctx2 = document.getElementById("myPieChartDuration");
+    // goal_task, rem_task, goal-min, rem_min
+    let min_completed = goal_list[2] - goal_list[3];
+    let min_rem = goal_list[3];
 
     const myPieDuration = new Chart(ctx2, {
       type: "pie",
@@ -261,7 +337,7 @@ content %}
         datasets: [
           {
             label: "# of Hours",
-            data: [20, 4],
+            data: [min_completed, min_rem],
             backgroundColor: ["#E8B59C", "#E8E3D9"],
             borderWidth: 1,
           },
