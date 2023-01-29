@@ -46,7 +46,7 @@ def saveMarkers(markers):
 def home():
     login_check()
 
-def calc_xy(y, x)
+def calc_xy(y, x):
     x_axis, y_axis = [], []
     tasks_completed, time_studied = 0, 0
     end_day = datetime.today().date() 
