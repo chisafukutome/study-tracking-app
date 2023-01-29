@@ -1,23 +1,33 @@
-{% extends "base.html" %} {% block title %}Log Study{% endblock %} {% block
-content %}
+{% extends "base.html" %}
+{% block title %}Log Study{% endblock %}
+{% block content %}
 
 <!-- TODO: validate number input -->
-<h1 align="center">Log Study Form</h1>
-<div class="log-form">
-  <form class="g-3" method="POST">
-    <!-- Date -->
-    <label for="date">Date</label>
-    <input
-      type="date"
-      class="form-control"
-      name="date"
-      id="date"
-      aria-label="date"
-    />
-    <!-- End Date -->
+<div class="containter">
+  <div class="row">
+    <div class="col text-center">
+      <h1>Log Study Form</h1>
+    </div>
+  </div>
+</div>
 
-    <!-- Task -->
-    <label for="task">Task</label>
+<div class="container form-group">
+  <form class="g-3" method="POST">
+    <div class="row pb-3">
+      <!-- Date -->
+      <label for="date">Date</label>
+      <input
+        type="date"
+        class="form-control"
+        name="date"
+        id="date"
+        aria-label="date"
+      />
+      <!-- End Date -->
+    </div>
+    <div  class="row pb-3">
+      <!-- Task -->
+      <label for="task">Task</label>
     <input
       type="text"
       class="form-control"
@@ -25,21 +35,22 @@ content %}
       id="task"
       placeholder="enter your study task"
       aria-label="task"
-    />
-    <!-- End Task -->
+      />
+      <!-- End Task -->
+    </div>
 
-    <!-- Amount -->
-    <label for="amount">Amount</label>
-    <div class="row">
+    <div class="row pb-3">
+      <!-- Amount -->
+      <label for="amount">Amount</label>
       <div class="col">
         <input
-          type="number"
-          class="form-control"
-          name="amount"
-          id="amount"
-          placeholder="0"
-          aria-label="amount"
-          min=0 oninput="validity.valid||(value='');"
+        type="number"
+        class="form-control"
+        name="amount"
+        id="amount"
+        placeholder="0"
+        aria-label="amount"
+        min=0 oninput="validity.valid||(value='');"
         />
       </div>
       <div class="col">
@@ -54,8 +65,8 @@ content %}
     <!-- End Amount -->
 
     <!-- Duration -->
-    <label for="duration">Duration</label>
-    <div class="row">
+    <div class="row pb-3">
+      <label for="duration">Duration</label>
       <div class="col">
         <input
           type="number"
@@ -83,17 +94,20 @@ content %}
     </div>
     <!-- End Duration -->
 
-    <!-- Location -->
-    <label for="location">Location</label>
-    <select name="location" id="location" class="form-select">
+    <div class="row pb-3">
+      <!-- Location -->
+      <label for="location">Location</label>
+      <select name="location" id="location" class="form-select">
         <option value="home">home</option>
         <option value="school">school</option>
       </select>
-    <!-- End Location -->
-    <div align="center">
-      <button type="submit" class="btn btn-light" style="background-color: #E8B59C; border: none;">Log Study</button>
+      <!-- End Location -->
     </div>
+    <div class="row pb-3">
+      <div class="col text-center">
+        <button type="submit" class="btn btn-light" style="background-color: #E8B59C; border: none;">Log Study</button>
+      </div>
     </div>
-</form>
+  </form>
 </div>
   {% endblock %}
