@@ -8,8 +8,99 @@
 </style>
 
 <body>
+    <!--HTML-->
+    <div id="pomodoro-app">
+        <div id="container">
+          <div id="timer">
+            <div id="time">
+              <span id="minutes">25</span>
+              <span id="colon">:</span>
+              <span id="seconds">00</span>
+            </div>
+            <div id="filler"></div>
+          </div>
+      
+          <div id="buttons">
+            <button id="work">Work</button>
+            <button id="shortBreak">Short Break</button>
+            <button id="longBreak">Long Break</button>
+            <button id="stop">Stop</button>
+          </div>
+        </div>
+      </div>
+      <!--END HTML-->
+      <!--CSS-->
+     <script>
+      #container{
+        border:1px solid #333;
+        border-radius :20px;
+        width:400px;
+        margin:20px auto;
+        padding:20px;
+        text-align:center;
+        background : #333;
+      }
+      
+      #timer{ 
+        color:#f00; 
+        font-size:50px; 
+        margin:10px auto;
+        border : 5px solid red;
+        border-radius:50%;
+        width:200px;
+        height:200px;
+        overflow:hidden;
+        position:relative;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        cursor:default;
+      }
+      
+      #time{
+        margin-top:70px;
+        z-index : 1;
+        position:relative;
+      }
+      
+      #filler{
+        background : #ddffcc;
+        height: 0px;
+        width: 200px;
+        position:absolute;
+        bottom:0;
+      }
+      
+      #buttons button { 
+        background:#4da6ff; 
+        border:none; 
+        color:#fff; 
+        cursor:pointer; 
+        padding:5px; 
+        width:90px; 
+        margin:10px auto;
+        font-size:14px;
+        height : 50px;
+        border-radius : 50px;
+      }
+      
+      #buttons button#shortBreak{
+        background : #0c0;
+      }
+      
+      #buttons button#longBreak{
+        background : #080;
+      }
+      
+      #buttons button#stop{
+        background : #f00;
+      }
+      </script>
+      <!--END CSS-->
+      <!--JS-->
     <script>
-        var pomodoro = {
+        {var pomodoro = {
     started : false,
     minutes : 0,
     seconds : 0,
@@ -93,8 +184,9 @@
 };
 window.onload = function(){
   pomodoro.init();
-};
+};}
     </script>
+    <!--END JS-->
 </body>
 
 <!-- <div id="pomodoro-app">
