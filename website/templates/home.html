@@ -1,43 +1,89 @@
-{% extends "base.html" %}
-{% block title %}Dashboard{% endblock %}
-{% block content %}
+{% extends "base.html" %} {% block title %}Dashboard{% endblock %} {% block
+content %}
 <div class="container">
   <div class="row">
-    <h1>{{ name }}'s Dashboard</h1>
+    <h1>{{ name.title() }}'s Dashboard</h1>
   </div>
 </div>
 <div class="container">
   <form method="POST" action="/change_chart">
     <div class="row p-2">
-    <!-- Progress Chart & Messages -->
+      <!-- Progress Chart & Messages -->
       <h2 class="p-2 text-center">Progress</h2>
 
-    <!-- Chart Buttons -->
-    <!-- <div class="chart-btns row"> -->
+      <!-- Chart Buttons -->
+      <!-- <div class="chart-btns row"> -->
       <!-- y-axis (hours | tasks)-->
       <div class="col text-center">
-        <div class="btn-group" role="group" aria-label="Basic radio toggle button group" >
-          <input type="radio" class="btn-check form-control" name="y_axis_ch" id="hours_ch" value="hours_ch" autocomplete="off" checked/>
+        <div
+          class="btn-group"
+          role="group"
+          aria-label="Basic radio toggle button group"
+        >
+          <input
+            type="radio"
+            class="btn-check form-control"
+            name="y_axis_ch"
+            id="hours_ch"
+            value="hours_ch"
+            autocomplete="off"
+            checked
+          />
           <label class="btn btn-outline-primary" for="hours_ch">hours</label>
-          
-          <input type="radio" class="btn-check form-control" name="y_axis_ch" id="tasks_ch" value="tasks_ch" autocomplete="off" />
+
+          <input
+            type="radio"
+            class="btn-check form-control"
+            name="y_axis_ch"
+            id="tasks_ch"
+            value="tasks_ch"
+            autocomplete="off"
+          />
           <label class="btn btn-outline-primary" for="tasks_ch">tasks</label>
         </div>
       </div>
       <!-- End y-axis -->
-      
+
       <!-- x-axis (daily | weekly | monthly)-->
-      
+
       <div class="col text-center">
-        <div class="btn-group" role="group" aria-label="Basic radio toggle button group" >
-          <input type="radio" class="btn-check form-control" name="x_axis_ch" id="daily_ch" value="daily_ch" autocomplete="off" checked />
+        <div
+          class="btn-group"
+          role="group"
+          aria-label="Basic radio toggle button group"
+        >
+          <input
+            type="radio"
+            class="btn-check form-control"
+            name="x_axis_ch"
+            id="daily_ch"
+            value="daily_ch"
+            autocomplete="off"
+            checked
+          />
           <label class="btn btn-outline-primary" for="daily_ch">daily</label>
-              
-          <input type="radio" class="btn-check form-control" name="x_axis_ch" id="weekly_ch" value="weekly_ch" autocomplete="off" />
+
+          <input
+            type="radio"
+            class="btn-check form-control"
+            name="x_axis_ch"
+            id="weekly_ch"
+            value="weekly_ch"
+            autocomplete="off"
+          />
           <label class="btn btn-outline-primary" for="weekly_ch">weekly</label>
-                
-          <input type="radio" class="btn-check form-control" name="x_axis_ch" id="monthly_ch" value="monthly_ch" autocomplete="off" />
-          <label class="btn btn-outline-primary" for="monthly_ch">monthly</label>
+
+          <input
+            type="radio"
+            class="btn-check form-control"
+            name="x_axis_ch"
+            id="monthly_ch"
+            value="monthly_ch"
+            autocomplete="off"
+          />
+          <label class="btn btn-outline-primary" for="monthly_ch"
+            >monthly</label
+          >
         </div>
       </div>
       <!-- End x-axis -->
@@ -55,7 +101,7 @@
         </div>
       </div>
     </div>
-      <!-- End Bar Chart -->
+    <!-- End Bar Chart -->
     <!-- End Chart Buttons -->
   </form>
   <div class="row p-4">
@@ -63,7 +109,8 @@
       <div class="progres">
         <div class="progress-message">
           <h5>
-            <span class="material-symbols-outlined"> schedule </span>Time Studied
+            <span class="material-symbols-outlined"> schedule </span>Time
+            Studied
           </h5>
           <p>
             <font>{{time_studied.split(':')[0]}}</font> hours
@@ -72,28 +119,25 @@
           <h5>
             <span class="material-symbols-outlined"> task </span>Tasks Completed
           </h5>
-          <p>
-            <font>{{tasks_completed}}</font> tasks
-          </p>
+          <p><font>{{tasks_completed}}</font> tasks</p>
         </div>
       </div>
     </div>
     <!-- End Progress Chart & Messages -->
   </div>
   <div class="row">
-
     <!-- Goal Chart & Messages -->
-    <h2 class="text-center">Goals (this week)</h2>
+    <h2 class="text-center">Goals (weekly)</h2>
     <div class="goal row text-center p-2">
       <div class="col">
         <!-- Pie Chart -->
         <div class="goal-chart p-4">
           <canvas id="myPieChartTasks" width="400" height="400"></canvas>
         </div>
-        <button onclick="addTaskCompleted()"> Add Task Completed</button>
-        <button onclick="addTaskReamining()"> Add Task Remaining</button>
+        <button onclick="addTaskCompleted()">Add Task Completed</button>
+        <button onclick="addTaskReamining()">Add Task Remaining</button>
         <!-- End Pie Chart -->
-        
+
         <p>You still need <font>5</font> more tasks.</p>
       </div>
       <div class="col">
@@ -101,8 +145,8 @@
         <div class="goal-chart p-4">
           <canvas id="myPieChartDuration" width="400" height="400"></canvas>
         </div>
-        <button onclick="addHoursCompleted()"> Add Hours Completed</button>
-        <button onclick="addHoursRemaining()"> Add Hours Remaining</button>
+        <button onclick="addHoursCompleted()">Add Hours Completed</button>
+        <button onclick="addHoursRemaining()">Add Hours Remaining</button>
         <!-- End Pie Chart -->
         <p>You still need <font>5</font> more hours.</p>
       </div>
@@ -111,8 +155,12 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script>x_unit = JSON.parse({{ unit }});</script>
-  <script>y_unit = {{ y_unit }};</script>
+  <script>
+    x_unit = JSON.parse({{ unit }});
+  </script>
+  <script>
+    y_unit = {{ y_unit }};
+  </script>
   <!-- Bar Chart JS -->
   <script>
     const unit_time = {1: "Day", 6: "Week", 30: "Month"}
@@ -152,7 +200,7 @@
   <!--PIE CHART JS-->
   <script>
     const ctx1 = document.getElementById("myPieChartTasks");
-    
+
     const myPieTasks = new Chart(ctx1, {
       type: "pie",
       data: {
@@ -186,21 +234,18 @@
         myPieTasks.config.data.datasets[0].data[0] += 1;
         myPieTasks.config.data.datasets[0].data[1] -= 1;
       }
-      
-    myPieTasks.update();
-  }
 
-  function addTaskReamining() {
-    
-    if(myPieTasks.config.data.datasets[0].data[0] > 0)
-    {
-      myPieTasks.config.data.datasets[0].data[1] +=1;
-      myPieTasks.config.data.datasets[0].data[0] -=1;
+      myPieTasks.update();
     }
-    
-    myPieTasks.update();
-  }
 
+    function addTaskReamining() {
+      if (myPieTasks.config.data.datasets[0].data[0] > 0) {
+        myPieTasks.config.data.datasets[0].data[1] += 1;
+        myPieTasks.config.data.datasets[0].data[0] -= 1;
+      }
+
+      myPieTasks.update();
+    }
   </script>
   <!-- End Pie Chart JS -->
 
@@ -243,20 +288,17 @@
         myPieDuration.config.data.datasets[0].data[1] -= 1;
       }
 
-
       myPieDuration.update();
-  }
-
-  function addHoursRemaining() {
-    
-    if(myPieDuration.config.data.datasets[0].data[0] > 0)
-    {
-      myPieDuration.config.data.datasets[0].data[1] +=1;
-      myPieDuration.config.data.datasets[0].data[0] -=1;
     }
 
-    myPieDuration.update();
-  }
+    function addHoursRemaining() {
+      if (myPieDuration.config.data.datasets[0].data[0] > 0) {
+        myPieDuration.config.data.datasets[0].data[1] += 1;
+        myPieDuration.config.data.datasets[0].data[0] -= 1;
+      }
+
+      myPieDuration.update();
+    }
   </script>
 </div>
 {% endblock %}

@@ -54,11 +54,11 @@ def calc_xy(y, x):
 
     for i in range(7):
         if x_dict[x] == 1:
-            studies = Study.query.filter(func.DATE(Study.date) == end_day, Study.user_id == CURR_USER.id).all()
+            studies = Study.query.filter(func.DATE(Study.date) == end_day).all()
         else:
             # Extract study log data that is on the specific date
-            studies = Study.query.filter(func.DATE(Study.date) >= start_day, func.DATE(Study.date) <= end_day, Study.user_id == CURR_USER.id).all()
-
+            studies = Study.query.filter(func.DATE(Study.date) >= start_day, func.DATE(Study.date) <= end_day).all()
+        
         total_h = 0
         if studies:
             for study in studies:
