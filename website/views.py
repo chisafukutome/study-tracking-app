@@ -91,7 +91,6 @@ def calc_xy(y, x):
             tasks_completed += len(studies)
             if i == 6:
                 time_studied = f"{int(time_studied)}:{int((time_studied % 1) * 60)}"
-                print(time_studied, file=sys.stderr)
         # End Time Studied
         else:
             y_axis.append(len(studies))
