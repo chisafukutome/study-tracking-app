@@ -97,6 +97,8 @@
         <!-- Location -->
         <label for="location">Location</label>
         <select name="location" id="location" class="form-select">
+          <option value="Home">Home</option>
+          <option value="School">School</option>
           {% for location in locations %}
           <option value="{{ location }}">{{ location }}</option>
           {% endfor %}

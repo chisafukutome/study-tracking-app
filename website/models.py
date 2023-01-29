@@ -11,8 +11,6 @@ class Study(db.Model):
     unit = db.Column(db.String(150))
     duration_h = db.Column(db.Integer, default=0)
     duration_m = db.Column(db.Integer, default=0)
-
-    # TODO: unique with id
     location = db.Column(db.String(150))
 
 

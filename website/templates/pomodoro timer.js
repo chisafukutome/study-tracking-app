@@ -80,6 +80,7 @@ var pomodoro = {
       this.fillerHeight = 0;
     }
 };
+
 window.onload = function(){
   pomodoro.init();
 };
