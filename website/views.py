@@ -318,7 +318,16 @@ def set_goal():
         date = datetime.strptime(str(today), "%Y-%m-%d")
         exp_date = datetime.strptime(str(one_wk), "%Y-%m-%d")
         goal_task = request.form.get('goal_task')
-        goal_m = str(int(request.form.get('goal_m')) + int(request.form.get('goal_h')) * 60)
+
+        duration_h = request.form.get('goal_h')
+        duration_m = request.form.get('goal_m')
+
+        # if there is no value, assign 0
+        duration_h = 0 if duration_h == "" else duration_h
+        duration_m = 0 if duration_m == "" else duration_m
+
+
+        goal_m = int(duration_h) * 60 + int(duration_m)
         rem_task = request.form.get('goal_task')
         rem_m = goal_m
 
