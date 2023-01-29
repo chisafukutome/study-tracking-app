@@ -100,7 +100,13 @@ def calc_xy(y, x):
                 time_studied = total_h
                 time_studied = f"{int(time_studied)}:{int((time_studied % 1) * 60)}"
 
-    return {'x_axis':x_axis, 'y_axis':y_axis, 'tasks_completed':tasks_completed, 'time_studied': time_studied, 'unit': x_dict[x]}
+    return {
+        'x_axis': x_axis,
+        'y_axis': y_axis,
+        'tasks_completed': tasks_completed,
+        'time_studied': time_studied,
+        'unit': x_dict[x]
+    }
 
 
 @views.route("/")
@@ -111,7 +117,16 @@ def home():
         return redirect(url_for('views.login'))
 
     xy_data = calc_xy('hours_ch', 'daily_ch')
-    return render_template("home.html", name=CURR_USER.data.name, x_axis=json.dumps(xy_data['x_axis'][::-1]), y_axis=json.dumps(xy_data['y_axis'][::-1]), time_studied=xy_data['time_studied'], tasks_completed=xy_data['tasks_completed'], unit=xy_data['unit'], y_unit='hours_ch')
+    return render_template(
+        "home.html",
+        name=CURR_USER.data.name,
+        x_axis=json.dumps(xy_data['x_axis'][::-1]),
+        y_axis=json.dumps(xy_data['y_axis'][::-1]),
+        time_studied=xy_data['time_studied'],
+        tasks_completed=xy_data['tasks_completed'],
+        unit=xy_data['unit'],
+        y_unit='hours_ch'
+    )
 
 
 @views.route("/log_study", methods=['GET', 'POST'])
@@ -136,7 +151,7 @@ def log_study():
         return redirect(url_for('views.home'))
 
     locations = SavedMarker.query.filter_by(user_id=CURR_USER.id).all()
-    labels = [l.label for l in locations]
+    labels = [loc.label for loc in locations]
     return render_template("study_log.html", locations=labels)
 
 
@@ -221,14 +236,21 @@ def map():
 
 @views.route("/change_chart", methods=["POST"])
 def change_chart():
-    # if request.method == "POST":
     x_axis_ch = request.form.get('x_axis_ch')
     y_axis_ch = request.form.get('y_axis_ch')
 
     xy_data = calc_xy(y_axis_ch, x_axis_ch)
 
-    # TODO: UPDATE the frontend
-    return render_template("home.html", name=CURR_USER.data.name, x_axis=json.dumps(xy_data['x_axis'][::-1]), y_axis=json.dumps(xy_data['y_axis'][::-1]), time_studied=xy_data['time_studied'], tasks_completed=xy_data['tasks_completed'], unit=xy_data['unit'], y_unit=y_axis_ch)
+    return render_template(
+        "home.html",
+        name=CURR_USER.data.name,
+        x_axis=json.dumps(xy_data['x_axis'][::-1]),
+        y_axis=json.dumps(xy_data['y_axis'][::-1]),
+        time_studied=xy_data['time_studied'],
+        tasks_completed=xy_data['tasks_completed'],
+        unit=xy_data['unit'],
+        y_unit=y_axis_ch
+    )
 
 
 @views.route("/virtual_study_space", methods=['GET', 'POST'])
