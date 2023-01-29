@@ -41,11 +41,6 @@ def saveMarkers(markers):
         db.session.commit()
 
 
-@views.route("/")
-@views.route("/home")
-def home():
-    login_check()
-
 def calc_xy(y, x):
     x_axis, y_axis = [], []
     tasks_completed, time_studied = 0, 0
@@ -113,6 +108,9 @@ def calc_xy(y, x):
 @views.route("/")
 @views.route("/home")
 def home():
+    login_check()
+    if not session['logged_in']:
+        return redirect(url_for('views.login'))
     xy_data = calc_xy('hours_ch', 'daily_ch')
 
     return render_template("home.html", x_axis=json.dumps(xy_data['x_axis'][::-1]), y_axis=json.dumps(xy_data['y_axis'][::-1]), time_studied=xy_data['time_studied'], tasks_completed=xy_data['tasks_completed'])
