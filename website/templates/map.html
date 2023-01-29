@@ -15,22 +15,22 @@
     </div>
     <div class="row pb-2">
         <div class="col text-center">
-            <button class="btn btn-primary" onclick="saveMarkers()">Submit</button>
+            <button class="btn btn-primary" onclick="saveMarkers()" style="background-color: #E8B59C">Submit</button>
         </div>
         <div class="col text-center">
-            <button type="button" class="btn btn-secondary" id="addMarkerName" onclick="toggle();">New</button>
+            <button type="button" class="btn btn-secondary" id="addMarkerName" onclick="toggle();" style="background-color: #E8B59C">New</button>
         </div>
         <div class="col text-center" id="MarkerNameElement" hidden="hidden">
             <input type="text" class="form-control" id="MarkerName" name="name_input" placeholder="marker name">
         </div>
         <div class="col text-center">
             <form method="post">
-                <button class="btn btn-success" name="show_all" value="all">Show All</button>
+                <button class="btn btn-success" name="show_all" value="all" style="background-color: #E8B59C">Show All</button>
             </form>
         </div>
         <div class="col text-center">
             <form method="post">
-                <button class="btn btn-dark" name="delete_all" value="delete" onclick="deleteMarkers()">Clear</button>
+                <button class="btn btn-dark" name="delete_all" value="delete" onclick="deleteMarkers()" style="background-color: #E8B59C">Clear</button>
             </form>
         </div>
     </div>
