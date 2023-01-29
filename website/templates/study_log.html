@@ -98,8 +98,9 @@
       <!-- Location -->
       <label for="location">Location</label>
       <select name="location" id="location" class="form-select">
-        <option value="home">home</option>
-        <option value="school">school</option>
+        {% for location in locations %}
+        <option value="{{ location }}">{{ location }}</option>
+        {% endfor %}
       </select>
       <!-- End Location -->
     </div>
