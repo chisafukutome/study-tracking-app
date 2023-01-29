@@ -1,286 +1,262 @@
-{% extends "base.html" %} {% block title %}Dashboard{% endblock %} {% block
-content %}
-
-<h1>Dashboard</h1>
-<!-- Progress Chart & Messages -->
-<h3>Progress (Weekly)</h3>
-<!-- Chart Buttons -->
-<div class="chart-btns row">
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <h1>{{ name }}'s Dashboard</h1>
+  </div>
+</div>
+<div class="container">
   <form method="POST" action="/change_chart">
-    <!-- y-axis (hours | tasks)-->
-    <div
-      class="btn-group col-2"
-      role="group"
-      aria-label="Basic radio toggle button group"
-    >
-      <input
-        type="radio"
-        class="btn-check form-control"
-        name="y_axis_ch"
-        id="hours_ch"
-        value="hours_ch"
-        autocomplete="off"
-        checked
-      />
-      <label class="btn btn-outline-primary" for="hours_ch">hours</label>
+    <div class="row p-2">
+    <!-- Progress Chart & Messages -->
+      <h2 class="p-2 text-center">Progress</h2>
 
-      <input
-        type="radio"
-        class="btn-check form-control"
-        name="y_axis_ch"
-        id="tasks_ch"
-        value="tasks_ch"
-        autocomplete="off"
-      />
-      <label class="btn btn-outline-primary" for="tasks_ch">tasks</label>
+    <!-- Chart Buttons -->
+    <!-- <div class="chart-btns row"> -->
+      <!-- y-axis (hours | tasks)-->
+      <div class="col text-center">
+        <div class="btn-group" role="group" aria-label="Basic radio toggle button group" >
+          <input type="radio" class="btn-check form-control" name="y_axis_ch" id="hours_ch" value="hours_ch" autocomplete="off" checked/>
+          <label class="btn btn-outline-primary" for="hours_ch">hours</label>
+          
+          <input type="radio" class="btn-check form-control" name="y_axis_ch" id="tasks_ch" value="tasks_ch" autocomplete="off" />
+          <label class="btn btn-outline-primary" for="tasks_ch">tasks</label>
+        </div>
+      </div>
+      <!-- End y-axis -->
+      
+      <!-- x-axis (daily | weekly | monthly)-->
+      
+      <div class="col text-center">
+        <div class="btn-group" role="group" aria-label="Basic radio toggle button group" >
+          <input type="radio" class="btn-check form-control" name="x_axis_ch" id="daily_ch" value="daily_ch" autocomplete="off" checked />
+          <label class="btn btn-outline-primary" for="daily_ch">daily</label>
+              
+          <input type="radio" class="btn-check form-control" name="x_axis_ch" id="weekly_ch" value="weekly_ch" autocomplete="off" />
+          <label class="btn btn-outline-primary" for="weekly_ch">weekly</label>
+                
+          <input type="radio" class="btn-check form-control" name="x_axis_ch" id="monthly_ch" value="monthly_ch" autocomplete="off" />
+          <label class="btn btn-outline-primary" for="monthly_ch">monthly</label>
+        </div>
+      </div>
+      <!-- End x-axis -->
+      <div class="col text-center">
+        <div class="btn-group" role="group">
+          <button type="submit" class="btn btn-primary">Chart</button>
+        </div>
+      </div>
     </div>
-    <!-- End y-axis -->
-
-    <!-- x-axis (daily | weekly | monthly)-->
-    <div
-      class="btn-group col-2"
-      role="group"
-      aria-label="Basic radio toggle button group"
-    >
-      <input
-        type="radio"
-        class="btn-check form-control"
-        name="x_axis_ch"
-        id="daily_ch"
-        value="daily_ch"
-        autocomplete="off"
-        checked
-      />
-      <label class="btn btn-outline-primary" for="daily_ch">daily</label>
-
-      <input
-        type="radio"
-        class="btn-check form-control"
-        name="x_axis_ch"
-        id="weekly_ch"
-        value="weekly_ch"
-        autocomplete="off"
-      />
-      <label class="btn btn-outline-primary" for="weekly_ch">weekly</label>
-
-      <input
-        type="radio"
-        class="btn-check form-control"
-        name="x_axis_ch"
-        id="monthly_ch"
-        value="monthly_ch"
-        autocomplete="off"
-      />
-      <label class="btn btn-outline-primary" for="monthly_ch">monthly</label>
+    <div class="row">
+      <!-- Bar Chart -->
+      <div class="col">
+        <div class="progress-chart">
+          <canvas id="myChart" width="300" height="400"></canvas>
+        </div>
+      </div>
     </div>
-    <!-- End x-axis -->
-    <div
-      class="col btn-group"
-      role="group"
-      style="margin-left: 25%; margin-top: 0"
-    >
-      <button type="submit" class="btn btn-primary">Chart</button>
-    </div>
+      <!-- End Bar Chart -->
+    <!-- End Chart Buttons -->
   </form>
-</div>
-<!-- End Chart Buttons -->
-
-<div class="progres row">
-  <!-- Bar Chart -->
-  <div class="progress-chart col-8">
-    <canvas id="myChart" width="200" height="200"></canvas>
-  </div>
-  <!-- End Bar Chart -->
-
-  <div class="progress-message col text-center">
-    <div>
-      <h5>
-        <span class="material-symbols-outlined"> schedule </span>Time Studied
-      </h5>
-      <p>
-        <font>{{time_studied.split(':')[0]}}</font> hours
-        <font>{{time_studied.split(':')[1]}}</font> min
-      </p>
+  <div class="row p-4">
+    <div class="col pt-lg-1 text-center">
+      <div class="progres">
+        <div class="progress-message">
+          <h5>
+            <span class="material-symbols-outlined"> schedule </span>Time Studied
+          </h5>
+          <p>
+            <font>{{time_studied.split(':')[0]}}</font> hours
+            <font>{{time_studied.split(':')[1]}}</font> min
+          </p>
+          <h5>
+            <span class="material-symbols-outlined"> task </span>Tasks Completed
+          </h5>
+          <p>
+            <font>{{tasks_completed}}</font> tasks
+          </p>
+        </div>
+      </div>
     </div>
-    <h5>
-      <span class="material-symbols-outlined"> task </span>Tasks Completed
-    </h5>
-    <p><font>{{tasks_completed}}</font> tasks</p>
+    <!-- End Progress Chart & Messages -->
   </div>
-</div>
-<!-- End Progress Chart & Messages -->
+  <div class="row">
 
-<!-- Goal Chart & Messages -->
-<h3>Goals (this week)</h3>
-<div class="goal row text-center">
-  <div class="col">
-    <!-- Pie Chart -->
-    <div class="goal-chart">
-      <canvas id="myPieChartTasks" width="400" height="400"></canvas>
+    <!-- Goal Chart & Messages -->
+    <h2 class="text-center">Goals (this week)</h2>
+    <div class="goal row text-center p-2">
+      <div class="col">
+        <!-- Pie Chart -->
+        <div class="goal-chart p-4">
+          <canvas id="myPieChartTasks" width="400" height="400"></canvas>
+        </div>
+        <button onclick="addTaskCompleted()"> Add Task Completed</button>
+        <button onclick="addTaskReamining()"> Add Task Remaining</button>
+        <!-- End Pie Chart -->
+        
+        <p>You still need <font>5</font> more tasks.</p>
+      </div>
+      <div class="col">
+        <!-- Pie Chart -->
+        <div class="goal-chart p-4">
+          <canvas id="myPieChartDuration" width="400" height="400"></canvas>
+        </div>
+        <button onclick="addHoursCompleted()"> Add Hours Completed</button>
+        <button onclick="addHoursRemaining()"> Add Hours Remaining</button>
+        <!-- End Pie Chart -->
+        <p>You still need <font>5</font> more hours.</p>
+      </div>
     </div>
-    <button onclick="addTaskCompleted()"> Add Task Completed</button>
-    <button onclick="addTaskReamining()"> Add Task Remaining</button>
-    <!-- End Pie Chart -->
-
-    <p>You still need <font>5</font> more tasks.</p>
+    <!-- end Goal Chart & Messages -->
   </div>
-  <div class="col">
-    <!-- Pie Chart -->
-    <div class="goal-chart">
-      <canvas id="myPieChartDuration" width="400" height="400"></canvas>
-    </div>
-    <button onclick="addHoursCompleted()"> Add Hours Completed</button>
-    <button onclick="addHoursRemaining()"> Add Hours Completed</button>
-    <!-- End Pie Chart -->
-    <p>You still need <font>5</font> more hours.</p>
-  </div>
-</div>
-<!-- end Goal Chart & Messages -->
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<!-- Bar Chart JS -->
-<script>
-  const ctx = document.getElementById("myChart");
-  let x_axis = JSON.parse({{x_axis | tojson}});
-  let y_axis = JSON.parse({{y_axis | tojson}});
-  new Chart(ctx, {
-    type: "bar",
-    data: {
-      labels: x_axis,
-      datasets: [
-        {
-          label: "Tasks Completed per Day",
-          data: y_axis,
-          backgroundColor: ["#E8B59C"],
-          borderWidth: 1,
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        x: {
-          display: true,
-        },
-        y: {
-          display: true,
-          beginAtZero: true,
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>x_unit = JSON.parse({{ unit }});</script>
+  <script>y_unit = {{ y_unit }};</script>
+  <!-- Bar Chart JS -->
+  <script>
+    const unit_time = {1: "Day", 6: "Week", 30: "Month"}
+    const ctx = document.getElementById("myChart");
+    let x_axis = JSON.parse({{x_axis | tojson}});
+    let y_axis = JSON.parse({{y_axis | tojson}});
+    new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: x_axis,
+        datasets: [
+          {
+            label: y_unit.id.charAt(0).toUpperCase() + y_unit.id.substring(1,5) + " Completed per " + unit_time[x_unit],
+            data: y_axis,
+            backgroundColor: ["#E8B59C"],
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: {
+            display: true,
+          },
+          y: {
+            display: true,
+            beginAtZero: true,
+          },
         },
       },
-    },
-  });
-</script>
-<!-- End Bar Chart JS-->
+    });
+  </script>
+  <!-- End Bar Chart JS-->
 
-<!--PIE CHART JS-->
-<script>
-  const ctx1 = document.getElementById("myPieChartTasks");
-
-  const myPieTasks = new Chart(ctx1, {
-    type: "pie",
-    data: {
-      labels: ["Tasks Completed", "Tasks Remaining"],
-      datasets: [
-        {
-          label: "# of Tasks",
-          data: [20, 5],
-          backgroundColor: ["#E8B59C", "#E8E3D9"],
-          borderWidth: 1,
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        x: {
-          display: false,
-        },
-        y: {
-          display: false,
-          beginAtZero: true,
+  <!--PIE CHART JS-->
+  <script>
+    const ctx1 = document.getElementById("myPieChartTasks");
+    
+    const myPieTasks = new Chart(ctx1, {
+      type: "pie",
+      data: {
+        labels: ["Tasks Completed", "Tasks Remaining"],
+        datasets: [
+          {
+            label: "# of Tasks",
+            data: [20, 5],
+            backgroundColor: ["#E8B59C", "#E8E3D9"],
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: {
+            display: false,
+          },
+          y: {
+            display: false,
+            beginAtZero: true,
+          },
         },
       },
-    },
-  });
+    });
 
-  function addTaskCompleted() {
-    if (myPieTasks.config.data.datasets[0].data[1] > 0) {
-      myPieTasks.config.data.datasets[0].data[0] += 1;
-      myPieTasks.config.data.datasets[0].data[1] -= 1;
-    }
-
-  myPieTasks.update();
-}
-
-function addTaskReamining() {
-  
-  if(myPieTasks.config.data.datasets[0].data[0] > 0)
-  {
-    myPieTasks.config.data.datasets[0].data[1] +=1;
-    myPieTasks.config.data.datasets[0].data[0] -=1;
+    function addTaskCompleted() {
+      if (myPieTasks.config.data.datasets[0].data[1] > 0) {
+        myPieTasks.config.data.datasets[0].data[0] += 1;
+        myPieTasks.config.data.datasets[0].data[1] -= 1;
+      }
+      
+    myPieTasks.update();
   }
 
-  myPieTasks.update();
-}
-
-</script>
-<!-- End Pie Chart JS -->
-
-<!--PIE CHART TASKS-->
-
-<script>
-  const ctx2 = document.getElementById("myPieChartDuration");
-
-  const myPieDuration = new Chart(ctx2, {
-    type: "pie",
-    data: {
-      labels: ["Time Completed", "Time Remaining"],
-      datasets: [
-        {
-          label: "# of Hours",
-          data: [20, 4],
-          backgroundColor: ["#E8B59C", "#E8E3D9"],
-          borderWidth: 1,
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        x: {
-          display: false,
-        },
-        y: {
-          display: false,
-          beginAtZero: true,
-        },
-      },
-    },
-  });
-
-  function addHoursCompleted() {
-    if (myPieDuration.config.data.datasets[0].data[1] > 0) {
-      myPieDuration.config.data.datasets[0].data[0] += 1;
-      myPieDuration.config.data.datasets[0].data[1] -= 1;
+  function addTaskReamining() {
+    
+    if(myPieTasks.config.data.datasets[0].data[0] > 0)
+    {
+      myPieTasks.config.data.datasets[0].data[1] +=1;
+      myPieTasks.config.data.datasets[0].data[0] -=1;
     }
-
-
-  myPieDuration.update();
-}
-
-function addHoursRemaining() {
-  
-  if(myPieDuration.config.data.datasets[0].data[0] > 0)
-  {
-    myPieDuration.config.data.datasets[0].data[1] +=1;
-    myPieDuration.config.data.datasets[0].data[0] -=1;
+    
+    myPieTasks.update();
   }
 
-  myPieDuration.update();
-}
-</script>
+  </script>
+  <!-- End Pie Chart JS -->
+
+  <!--PIE CHART TASKS-->
+
+  <script>
+    const ctx2 = document.getElementById("myPieChartDuration");
+
+    const myPieDuration = new Chart(ctx2, {
+      type: "pie",
+      data: {
+        labels: ["Time Completed", "Time Remaining"],
+        datasets: [
+          {
+            label: "# of Hours",
+            data: [20, 4],
+            backgroundColor: ["#E8B59C", "#E8E3D9"],
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: {
+            display: false,
+          },
+          y: {
+            display: false,
+            beginAtZero: true,
+          },
+        },
+      },
+    });
+
+    function addHoursCompleted() {
+      if (myPieDuration.config.data.datasets[0].data[1] > 0) {
+        myPieDuration.config.data.datasets[0].data[0] += 1;
+        myPieDuration.config.data.datasets[0].data[1] -= 1;
+      }
+
+
+      myPieDuration.update();
+  }
+
+  function addHoursRemaining() {
+    
+    if(myPieDuration.config.data.datasets[0].data[0] > 0)
+    {
+      myPieDuration.config.data.datasets[0].data[1] +=1;
+      myPieDuration.config.data.datasets[0].data[0] -=1;
+    }
+
+    myPieDuration.update();
+  }
+  </script>
+</div>
 {% endblock %}
