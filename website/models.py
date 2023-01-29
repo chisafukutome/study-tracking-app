@@ -4,6 +4,7 @@ from sqlalchemy.sql import func
 
 class Study(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    # user_id = db.Column(db.Integer)
     date = db.Column(db.Date, default=func.now())
     task = db.Column(db.String(150), nullable=False)
     amount = db.Column(db.Integer, default=0)

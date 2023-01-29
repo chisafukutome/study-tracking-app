@@ -34,11 +34,11 @@ def check_user_exists(input):
 
 def saveMarkers(markers):
     for item in markers:
-        if SavedMarker.query.filter_by(user_id=CURR_USER.data.id, long=item[0], lat=item[1]).first is not None:
+        if SavedMarker.query.filter_by(user_id=CURR_USER.data.id, long=item[0], lat=item[1]).first() is not None:
             continue
         marker = SavedMarker(user_id=CURR_USER.data.id, long=item[0], lat=item[1])
         db.session.add(marker)
-        db.session.commit()
+    db.session.commit()
 
 
 def calc_xy(y, x):
@@ -168,7 +168,7 @@ def login():
     if request.method == 'POST':
         user_entry = check_user_exists(request.form['user_input'])
         if user_entry is None or not bcrypt.check_password_hash(user_entry[0].passw, request.form['passwd']):
-            flash("Invalid Username or password1", "danger")
+            flash("Invalid Username or password", "danger")
             return redirect(url_for('views.login'))
 
         CURR_USER.logout()
@@ -179,8 +179,8 @@ def login():
 
 @views.route("/logout", methods=['GET', 'POST'])
 def logout():
-    login_check()
     CURR_USER.logout()
+    login_check()
     return render_template('login.html')
 
 
@@ -192,8 +192,15 @@ def map():
         if 'show_all' in request.form and request.form['show_all'] == 'all':
             markers = SavedMarker.query.all()
             for m in markers:
-                coords.append([m.long, m.lat])
+                name = User.query.filter_by(id=m.user_id).first().name
+                print(name, file=sys.stderr)
+                coords.append([m.long, m.lat, name])
             return render_template('map.html', saved=coords)
+        elif 'delete_all' in request.form:
+            trash = SavedMarker.query.filter_by(user_id=CURR_USER.id).all()
+            for t in trash:
+                db.session.delete(t)
+            db.session.commit()
         else:
             if not CURR_USER.id:
                 flash("Not Logged In!", "danger")
@@ -203,9 +210,9 @@ def map():
         markers = SavedMarker.query.filter_by(user_id=CURR_USER.id).all()
         for m in markers:
             coords.append([m.long, m.lat])
-        return render_template('map.html', saved=coords)
+        return render_template('map.html', saved=coords, name=CURR_USER.data.name)
 
-    return render_template('map.html')
+    return render_template('map.html', name="Guest")
 
 
 
