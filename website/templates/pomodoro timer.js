@@ -1,15 +1,4 @@
-{% extends "base.html" %} {% block title %}Virtual Study Space{% endblock %} {% block
-    content %}
-
-<style>
-    body {background-color: #CAD9DA;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    }
-</style>
-
-<body>
-    <script>
-        var pomodoro = {
+var pomodoro = {
     started : false,
     minutes : 0,
     seconds : 0,
@@ -94,51 +83,3 @@
 window.onload = function(){
   pomodoro.init();
 };
-    </script>
-</body>
-
-<!-- <div id="pomodoro-app">
-  <div id="container">
-    <div id="timer">
-      <div id="time">
-        <span id="minutes">25</span>
-        <span id="colon">:</span>
-        <span id="seconds">00</span>
-      </div>
-      <div id="filler"></div>
-    </div>
-
-    <div id="buttons" class="button">
-      <button id="work" onclick="countdown">Work</button>
-      <button id="shortBreak">Short Break</button>
-      <button id="longBreak">Long Break</button>
-      <button id="stop">Stop</button>
-    </div>
-  </div>
-</div> -->
-
-<HTML>
-    <HEAD> <TITLE>Activity - Insert animated GIF to HTML</TITLE> </HEAD>
-    <BODY>
-      <IMG SRC="https://i.pinimg.com/originals/8d/f2/2d/8df22db5403a9f820a56788f10c9a9de.gif">
-    </BODY>
-    </HTML>
-<div class = "audioandimage">
-    <div class = "audiobox">
-        <p>
-            <audio controls autoplay; loop>
-                <source src="https://storage.cloudconvert.com/tasks/f5f942cd-4210-43d0-a15e-ef8775e17c03/Rain-and-thunder-loop%5B1%5D.wav?AWSAccessKeyId=cloudconvert-production&Expires=1675035980&Signature=Bnwo66x7lq6q6kPfJyyiGyrzkF4%3D&response-content-disposition=attachment%3B%20filename%3D%22Rain-and-thunder-loop%5B1%5D.wav%22&response-content-type=audio%2Fwav" type="audio/wav">
-                Your browser does not support the audio element.
-                <button id = "play1" class = "button" onclick = "playSound(1)">&#9658</button>
-                    Rainy Weather
-                <span class = "volumeslider"><img class = "volume" src = "assets/volume.svg", width="16px">
-                <input type="range" id="volume1" onchange = "changeVolume(1)">
-                </span>  
-            </audio>
-        </p>
-        
-    </div>
-</div>
-
-
-{% endblock %}
