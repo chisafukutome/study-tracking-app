@@ -1,114 +1,114 @@
 {% extends "base.html" %}
 {% block title %}Log Study{% endblock %}
 {% block content %}
-
-<!-- TODO: validate number input -->
 <div class="containter">
-  <div class="row">
-    <div class="col text-center">
-      <h1>Log Study Form</h1>
+  <div class="containter">
+    <div class="row">
+      <div class="col text-center">
+        <h1>Log Study Form</h1>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="container form-group">
-  <form class="g-3" method="POST">
-    <div class="row pb-3">
-      <!-- Date -->
-      <label for="date">Date</label>
+  <div class="container form-group">
+    <form class="g-3" method="POST">
+      <div class="row pb-3">
+        <!-- Date -->
+        <label for="date">Date</label>
+        <input
+          type="date"
+          class="form-control"
+          name="date"
+          id="date"
+          aria-label="date"
+        />
+        <!-- End Date -->
+      </div>
+      <div  class="row pb-3">
+        <!-- Task -->
+        <label for="task">Task</label>
       <input
-        type="date"
+        type="text"
         class="form-control"
-        name="date"
-        id="date"
-        aria-label="date"
-      />
-      <!-- End Date -->
-    </div>
-    <div  class="row pb-3">
-      <!-- Task -->
-      <label for="task">Task</label>
-    <input
-      type="text"
-      class="form-control"
-      name="task"
-      id="task"
-      placeholder="enter your study task"
-      aria-label="task"
-      />
-      <!-- End Task -->
-    </div>
-
-    <div class="row pb-3">
-      <!-- Amount -->
-      <label for="amount">Amount</label>
-      <div class="col">
-        <input
-        type="number"
-        class="form-control"
-        name="amount"
-        id="amount"
-        placeholder="0"
-        aria-label="amount"
-        min=0 oninput="validity.valid||(value='');"
+        name="task"
+        id="task"
+        placeholder="enter your study task"
+        aria-label="task"
         />
+        <!-- End Task -->
       </div>
-      <div class="col">
-        <select name="unit" id="unit" class="form-select">
-          <option value="pages">pages</option>
-          <option value="modules">modules</option>
-          <option value="chapters">chapters</option>
-          <option value="questions">questions</option>
+
+      <div class="row pb-3">
+        <!-- Amount -->
+        <label for="amount">Amount</label>
+        <div class="col">
+          <input
+          type="number"
+          class="form-control"
+          name="amount"
+          id="amount"
+          placeholder="0"
+          aria-label="amount"
+          min=0 oninput="validity.valid||(value='');"
+          />
+        </div>
+        <div class="col">
+          <select name="unit" id="unit" class="form-select">
+            <option value="pages">pages</option>
+            <option value="modules">modules</option>
+            <option value="chapters">chapters</option>
+            <option value="questions">questions</option>
+          </select>
+        </div>
+      </div>
+      <!-- End Amount -->
+
+      <!-- Duration -->
+      <div class="row pb-3">
+        <label for="duration">Duration</label>
+        <div class="col">
+          <input
+            type="number"
+            class="form-control"
+            name="duration_h"
+            id="duration_h"
+            placeholder="0"
+            aria-label="duration_h"
+            min=0 oninput="validity.valid||(value='');"
+          />
+        </div>
+        <p class="col">hours</p>
+        <div class="col">
+          <input
+            type="number"
+            class="form-control"
+            name="duration_m"
+            id="duration_m"
+            placeholder="0"
+            aria-label="duration_m"
+            min=0 oninput="validity.valid||(value='');"
+          />
+        </div>
+        <p class="col">minutes</p>
+      </div>
+      <!-- End Duration -->
+
+      <div class="row pb-3">
+        <!-- Location -->
+        <label for="location">Location</label>
+        <select name="location" id="location" class="form-select">
+          {% for location in locations %}
+          <option value="{{ location }}">{{ location }}</option>
+          {% endfor %}
         </select>
+        <!-- End Location -->
       </div>
-    </div>
-    <!-- End Amount -->
-
-    <!-- Duration -->
-    <div class="row pb-3">
-      <label for="duration">Duration</label>
-      <div class="col">
-        <input
-          type="number"
-          class="form-control"
-          name="duration_h"
-          id="duration_h"
-          placeholder="0"
-          aria-label="duration_h"
-          min=0 oninput="validity.valid||(value='');"
-        />
+      <div class="row pb-3">
+        <div class="col text-center">
+          <button type="submit" class="btn btn-light" style="background-color: #E8B59C; border: none;">Log Study</button>
+        </div>
       </div>
-      <p class="col">hours</p>
-      <div class="col">
-        <input
-          type="number"
-          class="form-control"
-          name="duration_m"
-          id="duration_m"
-          placeholder="0"
-          aria-label="duration_m"
-          min=0 oninput="validity.valid||(value='');"
-        />
-      </div>
-      <p class="col">minutes</p>
-    </div>
-    <!-- End Duration -->
-
-    <div class="row pb-3">
-      <!-- Location -->
-      <label for="location">Location</label>
-      <select name="location" id="location" class="form-select">
-        {% for location in locations %}
-        <option value="{{ location }}">{{ location }}</option>
-        {% endfor %}
-      </select>
-      <!-- End Location -->
-    </div>
-    <div class="row pb-3">
-      <div class="col text-center">
-        <button type="submit" class="btn btn-light" style="background-color: #E8B59C; border: none;">Log Study</button>
-      </div>
-    </div>
-  </form>
+    </form>
+  </div>
 </div>
-  {% endblock %}
+{% endblock %}
