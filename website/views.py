@@ -37,7 +37,7 @@ def saveMarkers(markers):
     for item in markers:
         if SavedMarker.query.filter_by(user_id=CURR_USER.data.id, long=item[0], lat=item[1]).first() is not None:
             continue
-        marker = SavedMarker(user_id=CURR_USER.data.id, long=item[0], lat=item[1])
+        marker = SavedMarker(user_id=CURR_USER.data.id, label=item[2], long=item[0], lat=item[1])
         db.session.add(marker)
     db.session.commit()
 
@@ -99,9 +99,6 @@ def calc_xy(y, x):
             if i == 0:
                 time_studied = total_h
                 time_studied = f"{int(time_studied)}:{int((time_studied % 1) * 60)}"
-
-
-
 
     return {'x_axis':x_axis, 'y_axis':y_axis, 'tasks_completed':tasks_completed, 'time_studied': time_studied}
 
@@ -211,11 +208,10 @@ def map():
     elif CURR_USER.id:
         markers = SavedMarker.query.filter_by(user_id=CURR_USER.id).all()
         for m in markers:
-            coords.append([m.long, m.lat])
+            coords.append([m.long, m.lat, m.label])
         return render_template('map.html', saved=coords, name=CURR_USER.data.name)
 
     return render_template('map.html', name="Guest")
-
 
 
 @views.route("/change_chart", methods=["GET", "POST"])

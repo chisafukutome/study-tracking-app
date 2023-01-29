@@ -29,5 +29,6 @@ class SavedMarker(db.Model):
     __bind_key__ = 'markers'
     marker_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer)
+    label = db.Column(db.String(150))
     long = db.Column(db.Integer)
     lat = db.Column(db.Integer)

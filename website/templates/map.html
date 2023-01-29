@@ -17,6 +17,13 @@
             <button class="btn btn-primary" onclick="saveMarkers()">Submit</button>
         </div>
         <div class="col text-center">
+            <button type="button" class="btn btn-info" id="addMarkerName" onclick="toggle();">New</button>
+        </div>
+        <div class="col text-center" id="MarkerNameElement" hidden="hidden">
+            <input type="text" class="form-control" id="MarkerName" name="name_input" placeholder="marker name">
+            <button type="button" class="btn btn-info" onclick="">Submit</button>
+        </div>
+        <div class="col text-center">
             <form method="post">
                 <button class="btn btn-success" name="show_all" value="all">Show All</button>
             </form>
@@ -52,7 +59,9 @@
             });
 
             map.addListener("click", (event) => {
-                addMarker(curr_name, event.latLng);
+                addMarker(document.getElementById("MarkerName").value, event.latLng);
+                toggle();
+                document.getElementById('MarkerName').value = ''
             });
 
             {% for m in saved %}
@@ -75,7 +84,7 @@
             });
             
             curr_.push(marker);
-            markers.push([marker.getPosition().lat(), marker.getPosition().lng()]);
+            markers.push([marker.getPosition().lat(), marker.getPosition().lng(), fname]);
         }
 
         function deleteMarkers() {
@@ -96,6 +105,20 @@
         }
 
         window.initMap = initMap;
+    </script>
+    <script>
+        let toggle = () => {
+            let name_box = document.getElementById("MarkerNameElement");
+            let hidden = name_box.getAttribute("hidden");
+
+            if (hidden) {
+                console.log(hidden)
+                name_box.removeAttribute("hidden");
+            } else {
+                console.log(hidden)
+                name_box.setAttribute("hidden", "hidden");
+            }
+        }
     </script>
 </div>
 {% endblock %}
