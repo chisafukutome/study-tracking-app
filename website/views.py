@@ -42,6 +42,9 @@ def saveMarkers(markers):
     db.session.commit()
 
 
+def default_json(t):
+    return f'{t}'
+
 def calc_xy(y, x):
     x_axis, y_axis = [], []
     tasks_completed, time_studied = 0, 0
@@ -108,17 +111,9 @@ def calc_xy(y, x):
         'unit': x_dict[x]
     }
 
-
-@views.route("/")
-@views.route("/home")
-def home():
-
-    goal_list = []
-    login_check()
-    if not session['logged_in']:
-        return redirect(url_for('views.login'))
-
-    xy_data = calc_xy('hours_ch', 'daily_ch')
+def manage_goal():
+    # 0: goal_list, 1:goal obj from db
+    goal_info, goal_list = [], []
     goal = Goal.query.first()
 
     today = datetime.today().date()
@@ -137,6 +132,39 @@ def home():
         goal_list.append(goal.goal_m)
         goal_list.append(goal.rem_m)
 
+    goal_info.append(goal_list)
+    goal_info.append(goal)
+
+    return goal_info
+
+@views.route("/")
+@views.route("/home")
+def home():
+
+    goal_list = []
+    login_check()
+    if not session['logged_in']:
+        return redirect(url_for('views.login'))
+
+    xy_data = calc_xy('hours_ch', 'daily_ch')
+    goal_info = manage_goal()
+    # goal = Goal.query.first()
+
+    # today = datetime.today().date()
+
+    # if not goal:
+    #     goal_list = [-1]
+    # elif today > goal.exp_date or (goal.rem_m == 0 and goal.rem_task == 0):
+    #     # delete the goal when it expires
+    #     db.session.delete(goal)
+    #     db.session.commit()
+    #     goal_list = [-1]
+    # else:
+    #     # goal_task, rem_task, goal-min, rem_min
+    #     goal_list.append(goal.goal_task)
+    #     goal_list.append(goal.rem_task)
+    #     goal_list.append(goal.goal_m)
+    #     goal_list.append(goal.rem_m)
 
 
     return render_template(
@@ -147,7 +175,7 @@ def home():
         time_studied=xy_data['time_studied'],
         tasks_completed=xy_data['tasks_completed'],
         unit=xy_data['unit'],
-        y_unit='hours_ch', goal_list=json.dumps(goal_list), goal=goal
+        y_unit='hours_ch', goal_list=json.dumps(goal_info[0]), goal=goal_info[1]
     )
 
 
@@ -281,11 +309,16 @@ def map():
 
 @views.route("/change_chart", methods=["POST"])
 def change_chart():
+    goal_list = manage_goal()
     x_axis_ch = request.form.get('x_axis_ch')
     y_axis_ch = request.form.get('y_axis_ch')
 
     xy_data = calc_xy(y_axis_ch, x_axis_ch)
+    goal_info = manage_goal()
     print("------------------------", xy_data['x_axis'], xy_data['y_axis'])
+
+
+
 
     return render_template(
         "home.html",
@@ -295,7 +328,7 @@ def change_chart():
         time_studied=xy_data['time_studied'],
         tasks_completed=xy_data['tasks_completed'],
         unit=xy_data['unit'],
-        y_unit=y_axis_ch
+        y_unit=y_axis_ch,  goal_list=json.dumps(goal_info[0]), goal=goal_info[1]
     )
 
 
