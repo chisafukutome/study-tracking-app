@@ -92,7 +92,7 @@ def calc_xy(y, x):
             if i == 0:
                 # CALCULATE TIME STUDIED AND TASKS COMPLETED FOR THE MOST CURRENT X-VAL
                 tasks_completed = len(studies)
-                time_studies = y_axis[0]
+                time_studied = y_axis[0]
                 time_studied = f"{int(time_studied)}:{int((time_studied % 1) * 60)}"
         # End Time Studied
         else:
@@ -148,23 +148,6 @@ def home():
 
     xy_data = calc_xy('hours_ch', 'daily_ch')
     goal_info = manage_goal()
-    # goal = Goal.query.first()
-
-    # today = datetime.today().date()
-
-    # if not goal:
-    #     goal_list = [-1]
-    # elif today > goal.exp_date or (goal.rem_m == 0 and goal.rem_task == 0):
-    #     # delete the goal when it expires
-    #     db.session.delete(goal)
-    #     db.session.commit()
-    #     goal_list = [-1]
-    # else:
-    #     # goal_task, rem_task, goal-min, rem_min
-    #     goal_list.append(goal.goal_task)
-    #     goal_list.append(goal.rem_task)
-    #     goal_list.append(goal.goal_m)
-    #     goal_list.append(goal.rem_m)
 
 
     return render_template(
