@@ -2,6 +2,28 @@
 
 StudySpace is a site designed to help students keep track of their studying habits.
 
+## What it does
+StudySpace is an web application aimed at helping students find potential study locations at UF, keep track of studying habits to decrease procrastination, and set studying goals for exams.
+
+1. ### UF MAP
+A map of UF that allows students to pin their favorite study spots on campus.
+
+2. ### Study Tracking
+Students are able to set goals for themselves and can even add study sessions to see how much progress they are making.
+
+3. ### Virtual Study Space (VSS)
+Our VSS allows students to stay distraction free as they study or work on homework. They can listen to the relaxing sound of rain and are given notifications on when to take breaks and when to keep working.
+
+## How We Built It
+* Flask: The bulk of this application was built using the python web framework Flask.
+
+* HTML + Bootstrap + JS: These three were the key components in our ability to create and design the webpages of the web app.
+
+* Google Maps API: We used the google maps api to access an interactive map of the University of Florida.
+
+* SQLite: We stored user data through a python library called flask-sqlalchemy which makes use of sqlite databases.
+
+
 
 # Installation Guide
 

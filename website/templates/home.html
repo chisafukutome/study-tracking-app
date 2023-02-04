@@ -1,5 +1,12 @@
 {% extends "base.html" %} {% block title %}Dashboard{% endblock %} {% block
 content %}
+<style>
+  body {
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-size: "3"
+  }
+  h1, h2, h3, h4, h5, h6 {font-family: 'Georgia', sans-serif; font-size: "5";}
+</style>
 <div class="container">
   <div class="row">
     <h1>{{ name.title() }}'s Dashboard</h1>
@@ -29,7 +36,7 @@ content %}
             autocomplete="off"
             checked
           />
-          <label class="btn btn-outline-primary" for="hours_ch">hours</label>
+          <label class="btn btn-outline-primary" for="hours_ch" style="background-color: #E8B59C"><font. color= "#E8E3D9">hours</fontcolor></label>
 
           <input
             type="radio"
@@ -39,7 +46,7 @@ content %}
             value="tasks_ch"
             autocomplete="off"
           />
-          <label class="btn btn-outline-primary" for="tasks_ch">tasks</label>
+          <label class="btn btn-outline-primary" for="tasks_ch" style="background-color: #E8B59C"><font. color= "#E8E3D9">tasks</fontcolor></label>
         </div>
       </div>
       <!-- End y-axis -->
@@ -61,7 +68,8 @@ content %}
             autocomplete="off"
             checked
           />
-          <label class="btn btn-outline-primary" for="daily_ch">daily</label>
+          <label class="btn btn-outline-primary" for="daily_ch" style="background-color: #E8B59C"><font. color= "#E8E3D9">
+            daily</fontcolor></label>
 
           <input
             type="radio"
@@ -71,7 +79,7 @@ content %}
             value="weekly_ch"
             autocomplete="off"
           />
-          <label class="btn btn-outline-primary" for="weekly_ch">weekly</label>
+          <label class="btn btn-outline-primary" for="weekly_ch" style="background-color: #E8B59C"><font. color= "#E8E3D9">weekly</fontcolor></label>
 
           <input
             type="radio"
@@ -81,15 +89,15 @@ content %}
             value="monthly_ch"
             autocomplete="off"
           />
-          <label class="btn btn-outline-primary" for="monthly_ch"
-            >monthly</label
+          <label class="btn btn-outline-primary" for="monthly_ch" style="background-color: #E8B59C"
+            ><font. color= "#E8E3D9">monthly</fontcolor></label
           >
         </div>
       </div>
       <!-- End x-axis -->
       <div class="col text-center">
         <div class="btn-group" role="group">
-          <button type="submit" class="btn btn-primary">Chart</button>
+          <button type="submit" class="btn btn-primary" style="background-color: #E8B59C">Chart</button>
         </div>
       </div>
     </div>

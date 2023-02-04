@@ -1,6 +1,15 @@
 {% extends "base.html" %}
 {% block title %}Log Study{% endblock %}
 {% block content %}
+<style>
+  body {
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-size: "3"
+  }
+  h1{
+    font-family: Georgia, sans-serif; font-size: "5";
+  }
+</style>
 <div class="containter">
   <div class="containter">
     <div class="row">
@@ -21,6 +30,7 @@
           name="date"
           id="date"
           aria-label="date"
+          required
         />
         <!-- End Date -->
       </div>
@@ -34,6 +44,7 @@
         id="task"
         placeholder="enter your study task"
         aria-label="task"
+        required
         />
         <!-- End Task -->
       </div>
@@ -105,9 +116,11 @@
         </select>
         <!-- End Location -->
       </div>
+    
       <div class="row pb-3">
         <div class="col text-center">
-          <button type="submit" class="btn btn-light" style="background-color: #E8B59C; border: none;">Log Study</button>
+          <button type="submit" class="btn btn-light" style="background-color: #E8B59C; border: none;" ><font. color= "#E8E3D9">Log Study</fontcolor>
+          </button>
         </div>
       </div>
     </form>

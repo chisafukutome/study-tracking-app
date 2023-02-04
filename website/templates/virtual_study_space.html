@@ -1,6 +1,13 @@
 {% extends "base.html" %}
 {% block title %}Map{% endblock %}
 {% block content %}
+<style>
+    body {
+      font-family:Verdana, Geneva, Tahoma, sans-serif;
+      font-size: "3"
+    }
+    header{font-family: 'Georgia', sans-serif; font-size: "5";}
+</style>
 <div class="container">
   <div class="row p-3">
     <div class="col text-center">
@@ -18,10 +25,10 @@
       </div>
     </div>
     <div class="col">
-      <button class="btn btn-primary" id="work">Work</button>
-      <button class="btn btn-primary" id="shortBreak">Short Break</button>
-      <button class="btn btn-primary" id="longBreak">Long Break</button>
-      <button class="btn btn-primary" id="stop">Stop</button>
+      <button class="btn btn-primary" id="work" style="background-color: #E8B59C">Work</button>
+      <button class="btn btn-primary" id="shortBreak" style="background-color: #E8B59C">Short Break</button>
+      <button class="btn btn-primary" id="longBreak" style="background-color: #E8B59C">Long Break</button>
+      <button class="btn btn-primary" id="stop" style="background-color: #E8B59C">Stop</button>
     </div>
   </div>
   <div class="row">
@@ -46,7 +53,6 @@
       </div>
     </div>
   </div>
-  <!--END HTML-->
 
   <!--JS-->
   <script>

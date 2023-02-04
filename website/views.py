@@ -88,11 +88,11 @@ def calc_xy(y, x):
 
         if y == 'hours_ch':
             y_axis.append(total_h)
-            # Tasks Completed
+
             if i == 0:
+                # CALCULATE TIME STUDIED AND TASKS COMPLETED FOR THE MOST CURRENT X-VAL
                 tasks_completed = len(studies)
-                # Time Studied
-                time_studied = y_axis[0]
+                time_studies = y_axis[0]
                 time_studied = f"{int(time_studied)}:{int((time_studied % 1) * 60)}"
         # End Time Studied
         else:
